@@ -24,11 +24,8 @@ void MainWindow::on_openButton_clicked()
 {
     QGraphicsScene *m_scene;
     QString imagePath = QFileDialog::getOpenFileName(
-            this,
-            tr("Open File"),
-                "/",
-            tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" )
-    );
+            this, tr("Open File"), QDir::rootPath(),
+            tr("JPEG (*.jpg *.jpeg);;PNG (*.png)"));
 
     m_image = new QImage();
     m_image->load(imagePath);\
