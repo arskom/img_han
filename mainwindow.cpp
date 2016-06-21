@@ -37,10 +37,12 @@ void MainWindow::on_openButton_clicked()
     scene->setSceneRect(image.rect());
     ui->graphicsView->setScene(scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+}
 
+void MainWindow::on_sld_quality_valueChanged(int value) {
 
 }
 
+void MainWindow::on_sld_scale_valueChanged(int value) {
 
-
-
+}
