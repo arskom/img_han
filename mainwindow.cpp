@@ -1,12 +1,15 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QGraphicsScene"
-#include "QFileDialog"
 
+#include <QFileDialog>
+#include <QGraphicsScene>
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    m_scene(nullptr),
+    m_image(nullptr),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -19,7 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_openButton_clicked()
 {
-    QGraphicsScene *scene;
+    QGraphicsScene *m_scene;
     QString imagePath = QFileDialog::getOpenFileName(
             this,
             tr("Open File"),
@@ -27,15 +30,22 @@ void MainWindow::on_openButton_clicked()
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png)" )
     );
 
-    imageObject = new QImage();
-    imageObject->load(imagePath);
+    m_image = new QImage();
+    m_image->load(imagePath);\
 
-    image = QPixmap::fromImage(*imageObject);
+    m_pixmap = QPixmap::fromImage(*m_image);
 
-    scene = new QGraphicsScene(this);
-    scene->addPixmap(image);
-    scene->setSceneRect(image.rect());
-    ui->graphicsView->setScene(scene);
+    if (! m_scene) {
+        m_scene = new QGraphicsScene(this);
+    }
+    else {
+        m_scene->clear();
+    }
+
+    m_scene->addPixmap(m_pixmap);
+    m_scene->setSceneRect(m_pixmap.rect());
+
+    ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 }
 
