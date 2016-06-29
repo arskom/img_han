@@ -3,19 +3,10 @@
 #include <QFileDialog>
 #include <QGraphicsScene>
 #include <QImage>
-#include <QGraphicsItem>
-#include <QGraphicsPixmapItem>
-#include <QAbstractScrollArea>
 #include <QScrollBar>
 #include <QDebug>
-#include <QTextEdit>
-#include <QPainter>
-#include <QGraphicsPixmapItem>
-#include <QGraphicsAnchor>
 #include <QGraphicsView>
 #include <QBuffer>
-#include <QImageReader>
-#include <QImageWriter>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
