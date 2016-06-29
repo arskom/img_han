@@ -80,7 +80,9 @@ void MainWindow::on_sld_quality_valueChanged(int value)
     buffer.open(QIODevice::WriteOnly);
     m_image->save(&buffer,"WEBP",value);
 
-
+    auto l_size_b = buffer.size();
+    double l_size_kb = buffer.size()/1024.00;
+    ui->lbl_size->setText(QString::number(l_size_kb));
 
     QImage image;
     image.loadFromData(ba);
