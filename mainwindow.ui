@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>660</width>
-    <height>582</height>
+    <width>818</width>
+    <height>664</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,23 +18,70 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
-    <item row="0" column="0">
+    <item row="0" column="1">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
+      <item row="0" column="0" colspan="4">
+       <widget class="QGraphicsView" name="graphicsView">
+        <property name="cursor" stdset="0">
+         <cursorShape>ArrowCursor</cursorShape>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::WheelFocus</enum>
+        </property>
+        <property name="acceptDrops">
+         <bool>false</bool>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="lineWidth">
+         <number>0</number>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAsNeeded</enum>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustIgnored</enum>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="dragMode">
+         <enum>QGraphicsView::NoDrag</enum>
+        </property>
+        <property name="transformationAnchor">
+         <enum>QGraphicsView::AnchorViewCenter</enum>
+        </property>
+        <property name="resizeAnchor">
+         <enum>QGraphicsView::AnchorViewCenter</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Image size(kB):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Quality:</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="3">
+      <item row="3" column="3">
        <widget class="QPushButton" name="openButton">
         <property name="text">
          <string>Open</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
+      <item row="4" column="2">
        <widget class="QSlider" name="sld_scale">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -74,7 +121,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QLabel" name="lbl_quality">
         <property name="text">
          <string>100</string>
@@ -84,51 +131,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="3">
+      <item row="4" column="3">
        <widget class="QPushButton" name="saveButton">
         <property name="text">
          <string>Save</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="4">
-       <widget class="QGraphicsView" name="graphicsView">
-        <property name="cursor" stdset="0">
-         <cursorShape>ArrowCursor</cursorShape>
-        </property>
-        <property name="acceptDrops">
-         <bool>false</bool>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="lineWidth">
-         <number>0</number>
-        </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAsNeeded</enum>
-        </property>
-        <property name="sizeAdjustPolicy">
-         <enum>QAbstractScrollArea::AdjustIgnored</enum>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="dragMode">
-         <enum>QGraphicsView::NoDrag</enum>
-        </property>
-        <property name="transformationAnchor">
-         <enum>QGraphicsView::AnchorViewCenter</enum>
-        </property>
-        <property name="resizeAnchor">
-         <enum>QGraphicsView::AnchorViewCenter</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
+      <item row="3" column="2">
        <widget class="QSlider" name="sld_quality">
         <property name="maximum">
          <number>100</number>
@@ -141,14 +151,14 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="4" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Scale %:</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="QLabel" name="lbl_scale">
         <property name="text">
          <string>100</string>
@@ -159,9 +169,51 @@
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="lbl_size">
         <property name="text">
-         <string>Image size:</string>
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0" colspan="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>       Height:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="lbl_width">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLabel" name="lbl_height">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>        Width:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Compression(%):</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="lbl_compression">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
