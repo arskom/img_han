@@ -34,6 +34,8 @@ void MainWindow::on_openButton_clicked()
     m_image = new QImage();
     m_image->load(imagePath);
 
+    m_orig_size = QFileInfo(imagePath).size();
+
     ui->lbl_width->setText(QString::number(m_image->width()));
     ui->lbl_height->setText(QString::number(m_image->height()));
 
@@ -87,6 +89,10 @@ void MainWindow::on_sld_quality_valueChanged(int value)
     show_pixmap();
 
     ui->lbl_quality->setText(QString::number(value));
+
+    double comp_p = 100.0 * l_size_b / m_orig_size;
+    ui->lbl_compression->setText(QString::number(comp_p));
+
 
 
 
