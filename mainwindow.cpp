@@ -107,7 +107,7 @@ void MainWindow::reprocess_image(int scale, int quality) {
 }
 
 void MainWindow::rescale_image(int scale) {
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+
     int w = m_image->width();
     int h = m_image->height();
     int new_w = (w * scale)/100;
@@ -120,13 +120,15 @@ void MainWindow::rescale_image(int scale) {
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
     ui->lbl_scale->setText(QString::number(scale));
+
+
 }
 
 void MainWindow::requality_image(int quality) {
     QByteArray ba;
     QBuffer buffer(&ba);
     buffer.open(QIODevice::WriteOnly);
-    m_image->save(&buffer, "WEBP", quality);
+    m_pixmap.save(&buffer, "WEBP", quality);
 
     auto l_size_b = buffer.size();
     double l_size_kb = buffer.size() / 1024.00;
