@@ -8,6 +8,7 @@
 #include <QBuffer>
 #include <QScrollBar>
 #include <QFileDialog>
+#include <QMessageBox>
 #include <QImageReader>
 #include <QGraphicsView>
 #include <QDesktopWidget>
@@ -46,6 +47,17 @@ void MainWindow::on_openButton_clicked() {
     QString imagePath = QFileDialog::getOpenFileName(
             this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
+
+    if (imagePath.isEmpty()) {
+        qDebug() << "Empty string returned";
+        return;
+    }
+
+    if (! QFileInfo(imagePath).isReadable()) {
+        qDebug() << "File not readable";
+        QMessageBox::critical(this, tr("Critical Error"), tr("File is not readable"));
+        return;
+    }
 
     m_image = new QImage();
     m_image->load(imagePath);
