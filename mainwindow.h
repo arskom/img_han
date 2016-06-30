@@ -27,8 +27,12 @@ private slots:
     void on_saveButton_clicked();
 
 private:
+    void reprocess_image(int scale, int quality);
+    void rescale_image(int);
+    void requality_image(int);
     void show_pixmap();
     void change_size();
+
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
     QImage  *m_image;

@@ -99,54 +99,19 @@ void MainWindow::show_pixmap()
     m_scene->setSceneRect(m_pixmap.rect());
 }
 
-
-
-
-void MainWindow::on_sld_quality_valueChanged(int value)
-{
-
-    QByteArray ba;
-    QBuffer buffer(&ba);
-    buffer.open(QIODevice::WriteOnly);
-    m_image->save(&buffer,"WEBP",value);
-
-    auto l_size_b = buffer.size();
-    double l_size_kb = buffer.size()/1024.00;
-    ui->lbl_size->setText(QString::number(l_size_kb));
-
-    QImage image;
-    image.loadFromData(ba);
-    m_pixmap = QPixmap::fromImage(image);
+void MainWindow::reprocess_image(int scale, int quality) {
+    rescale_image(scale);
+    requality_image(quality);
 
     show_pixmap();
-
-    ui->lbl_quality->setText(QString::number(value));
-
-    double comp_p = 100.0 * l_size_b / m_orig_size;
-
-    if(comp_p>100)
-    {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
-    }
-    else if(comp_p<=100)
-    {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
-
-    }
 }
 
-
-void MainWindow::on_sld_scale_valueChanged(int value) {
-
+void MainWindow::rescale_image(int scale) {
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     int w = m_image->width();
     int h = m_image->height();
-    int new_w = (w * value)/100;
-    int new_h = (h * value)/100;
+    int new_w = (w * scale)/100;
+    int new_h = (h * scale)/100;
 
     ui->lbl_width->setText(QString::number(new_w));
     ui->lbl_height->setText(QString::number(new_h));
@@ -154,10 +119,43 @@ void MainWindow::on_sld_scale_valueChanged(int value) {
     m_pixmap = QPixmap::fromImage(
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
-    show_pixmap();
-    ui->lbl_scale->setText(QString::number(value));
-
- //   ui->graphicsView->scale(value/100.0,value/100.0);
+    ui->lbl_scale->setText(QString::number(scale));
 }
 
+void MainWindow::requality_image(int quality) {
+    QByteArray ba;
+    QBuffer buffer(&ba);
+    buffer.open(QIODevice::WriteOnly);
+    m_image->save(&buffer, "WEBP", quality);
 
+    auto l_size_b = buffer.size();
+    double l_size_kb = buffer.size() / 1024.00;
+    ui->lbl_size->setText(QString::number(l_size_kb));
+
+    QImage image;
+    image.loadFromData(ba);
+    m_pixmap = QPixmap::fromImage(image);
+
+    ui->lbl_quality->setText(QString::number(quality));
+
+    double comp_p = 100.0 * l_size_b / m_orig_size;
+
+    if(comp_p>100) {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
+    }
+    else if(comp_p<=100) {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
+    }
+}
+
+void MainWindow::on_sld_quality_valueChanged(int value) {
+    reprocess_image(ui->sld_scale->value(), value);
+}
+
+void MainWindow::on_sld_scale_valueChanged(int scale) {
+    reprocess_image(scale, ui->sld_quality->value());
+}
