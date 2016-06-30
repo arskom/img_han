@@ -12,6 +12,7 @@
 #include <QGraphicsView>
 #include <QDesktopWidget>
 #include <QGraphicsScene>
+#include <QStandardPaths>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -39,9 +40,11 @@ void MainWindow::showEvent(QShowEvent *e) {
 }
 
 void MainWindow::on_openButton_clicked() {
+    const auto &desktop_abs = QStandardPaths::standardLocations(
+                QStandardPaths::DesktopLocation);
 
     QString imagePath = QFileDialog::getOpenFileName(
-            this, tr("Open File"), /*QDir::rootPath()*/ "/home/arda/Masaüstü",
+            this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
 
     m_image = new QImage();
