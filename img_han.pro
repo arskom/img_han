@@ -4,9 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+lessThan(QT_MAJOR_VERSION, 5): error("requires Qt 5")
+
+# Because of: QAbstractScrollArea::sizeAdjustPolicy
+#     cf. http://doc.qt.io/qt-5/qabstractscrollarea.html#sizeAdjustPolicy-prop
+lessThan(QT_MINOR_VERSION, 2): error("requires Qt 5.2")
 
 TARGET = deneme2
 TEMPLATE = app

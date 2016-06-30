@@ -19,7 +19,7 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,1,0,0">
       <item row="4" column="1">
        <widget class="QLabel" name="lbl_compression">
         <property name="text">
@@ -30,7 +30,10 @@
       <item row="4" column="0">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Compression(%):</string>
+         <string>Compression (%):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -44,7 +47,10 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Image size(kB):</string>
+         <string>Image size (kB):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -65,13 +71,6 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>       Height:</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
        <widget class="QLabel" name="lbl_size">
         <property name="text">
@@ -83,6 +82,9 @@
        <widget class="QLabel" name="label">
         <property name="text">
          <string>          Quality:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -98,6 +100,9 @@
       </item>
       <item row="1" column="2" colspan="4">
        <widget class="QSlider" name="sld_quality">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
         <property name="maximum">
          <number>100</number>
         </property>
@@ -112,54 +117,10 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>          Scale %:</string>
+         <string>          Scale (%):</string>
         </property>
-       </widget>
-      </item>
-      <item row="4" column="5">
-       <widget class="QPushButton" name="saveButton">
-        <property name="text">
-         <string>Save</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2" colspan="4">
-       <widget class="QSlider" name="sld_scale">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="contextMenuPolicy">
-         <enum>Qt::DefaultContextMenu</enum>
-        </property>
-        <property name="layoutDirection">
-         <enum>Qt::LeftToRight</enum>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>100</number>
-        </property>
-        <property name="tracking">
-         <bool>true</bool>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="tickPosition">
-         <enum>QSlider::NoTicks</enum>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
@@ -203,17 +164,77 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>        Width:</string>
+      <item row="2" column="2" colspan="4">
+       <widget class="QSlider" name="sld_scale">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::DefaultContextMenu</enum>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="tracking">
+         <bool>true</bool>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="tickPosition">
+         <enum>QSlider::NoTicks</enum>
         </property>
        </widget>
       </item>
-      <item row="3" column="5">
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>        Width (px):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>       Height (px):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4" colspan="2">
        <widget class="QPushButton" name="openButton">
         <property name="text">
-         <string>Open</string>
+         <string>&amp;Open</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="4" colspan="2">
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>&amp;Save</string>
         </property>
        </widget>
       </item>
