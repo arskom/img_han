@@ -6,9 +6,6 @@
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsScene)
 
-class QGraphicsScene;
-
-
 
 namespace Ui {
 class MainWindow;
