@@ -9,6 +9,7 @@
 #include <QBuffer>
 #include <QLabel>
 #include <QImageReader>
+#include <QPalette>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -72,6 +73,8 @@ void MainWindow::show_pixmap()
 }
 
 
+
+
 void MainWindow::on_sld_quality_valueChanged(int value)
 {
 
@@ -93,12 +96,20 @@ void MainWindow::on_sld_quality_valueChanged(int value)
     ui->lbl_quality->setText(QString::number(value));
 
     double comp_p = 100.0 * l_size_b / m_orig_size;
-    ui->lbl_compression->setText(QString::number(comp_p));
 
+    if(comp_p>100)
+    {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
+    }
+    else if(comp_p<=100)
+    {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
 
-
-
-
+    }
 }
 
 

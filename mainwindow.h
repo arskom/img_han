@@ -28,6 +28,7 @@ private slots:
 
 private:
     void show_pixmap();
+    void change_size();
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
     QImage  *m_image;
