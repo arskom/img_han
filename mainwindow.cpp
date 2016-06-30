@@ -1,15 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QFileDialog>
-#include <QGraphicsScene>
 #include <QImage>
-#include <QScrollBar>
-#include <QDebug>
-#include <QGraphicsView>
-#include <QBuffer>
 #include <QLabel>
+#include <QDebug>
+#include <QBuffer>
+#include <QScrollBar>
+#include <QFileDialog>
 #include <QImageReader>
-#include <QPalette>
+#include <QGraphicsView>
+#include <QGraphicsScene>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
