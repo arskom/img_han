@@ -26,13 +26,13 @@ private slots:
     void on_sld_scale_valueChanged(int value);
     void on_saveButton_clicked();
 
-    void on_label_3_linkActivated(const QString &link);
-
 private:
     void show_pixmap();
+    void change_size();
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
     QImage  *m_image;
+    qint64 m_orig_size;
     QGraphicsScene *m_scene;
 };
 
