@@ -73,6 +73,8 @@ void MainWindow::show_pixmap()
 }
 
 
+
+
 void MainWindow::on_sld_quality_valueChanged(int value)
 {
 
@@ -108,10 +110,6 @@ void MainWindow::on_sld_quality_valueChanged(int value)
         m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
 
     }
-
-
-
-
 }
 
 
