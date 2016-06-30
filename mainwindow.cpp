@@ -1,5 +1,7 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
@@ -8,7 +10,9 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QGraphicsView>
+#include <QDesktopWidget>
 #include <QGraphicsScene>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,8 +29,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_openButton_clicked()
-{
+void MainWindow::showEvent(QShowEvent *e) {
+    QMainWindow::showEvent(e);
+
+    const auto &desktop_rect = QApplication::desktop()->screen()->rect();
+
+    this->resize(desktop_rect.width() * .75, desktop_rect.height() * .75);
+    this->move(desktop_rect.center() - this->rect().center());
+}
+
+void MainWindow::on_openButton_clicked() {
+
     QString imagePath = QFileDialog::getOpenFileName(
             this, tr("Open File"), /*QDir::rootPath()*/ "/home/arda/Masaüstü",
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));

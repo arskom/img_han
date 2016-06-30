@@ -17,6 +17,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+protected:
+    virtual void showEvent(QShowEvent *e) override;
+
 private slots:
     void on_openButton_clicked();
     void on_sld_quality_valueChanged(int value);
