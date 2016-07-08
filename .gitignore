@@ -29,4 +29,5 @@
 *.app
 
 # qmake cruft
-*.user
+*.pro.user
+*.pro.user.*
