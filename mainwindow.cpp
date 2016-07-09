@@ -40,7 +40,7 @@ void MainWindow::showEvent(QShowEvent *e) {
     this->move(desktop_rect.center() - this->rect().center());
 }
 
-void MainWindow::on_openButton_clicked() {
+void MainWindow::on_btn_open_clicked() {
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
@@ -75,7 +75,7 @@ void MainWindow::on_openButton_clicked() {
 }
 
 
-void MainWindow::on_saveButton_clicked()
+void MainWindow::on_btn_save_clicked()
 {
     QString imagePath = QFileDialog::getSaveFileName(
             this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
