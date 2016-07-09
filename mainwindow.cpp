@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtConcurrent/QtConcurrentRun>
+
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
@@ -21,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scene(nullptr),
     m_image(nullptr),
     m_orig_size(0),
+    m_processing(false),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -95,13 +98,24 @@ void MainWindow::show_pixmap() {
 
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
+
+    m_processing = false;
 }
 
+
 void MainWindow::reprocess_image(int scale, int quality) {
+    if (m_processing) {
+        return;
+    }
+
+    QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
+}
+
+void MainWindow::reprocess_image_impl(int scale, int quality) {
     rescale_image(scale);
     requality_image(quality);
 
-    show_pixmap();
+    QMetaObject::invokeMethod(this, "show_pixmap");
 }
 
 void MainWindow::rescale_image(int scale) {
