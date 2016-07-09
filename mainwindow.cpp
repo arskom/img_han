@@ -75,8 +75,7 @@ void MainWindow::on_btn_open_clicked() {
 }
 
 
-void MainWindow::on_btn_save_clicked()
-{
+void MainWindow::on_btn_save_clicked() {
     QString imagePath = QFileDialog::getSaveFileName(
             this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
@@ -86,8 +85,7 @@ void MainWindow::on_btn_save_clicked()
 }
 
 
-void MainWindow::show_pixmap()
-{
+void MainWindow::show_pixmap() {
     if (! m_scene) {
         m_scene = new QGraphicsScene(this);
     }
@@ -120,8 +118,6 @@ void MainWindow::rescale_image(int scale) {
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
     ui->lbl_scale->setText(QString::number(scale));
-
-
 }
 
 void MainWindow::requality_image(int quality) {
