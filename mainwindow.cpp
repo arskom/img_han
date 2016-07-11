@@ -98,6 +98,8 @@ void MainWindow::show_pixmap() {
         m_scene->clear();
     }
 
+    m_pixmap = m_pixmap.scaled(m_image->width(), m_image->height());
+
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
@@ -121,7 +123,6 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 }
 
 void MainWindow::rescale_image(int scale) {
-
     int w = m_image->width();
     int h = m_image->height();
     int new_w = (w * scale)/100;
