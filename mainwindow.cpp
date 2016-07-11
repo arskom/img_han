@@ -8,6 +8,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QBuffer>
+#include <QShortcut>
 #include <QScrollBar>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -27,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 }
 
 MainWindow::~MainWindow()
