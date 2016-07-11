@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtConcurrent/QtConcurrentRun>
+
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
@@ -21,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_scene(nullptr),
     m_image(nullptr),
     m_orig_size(0),
+    m_processing(false),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -40,7 +43,7 @@ void MainWindow::showEvent(QShowEvent *e) {
     this->move(desktop_rect.center() - this->rect().center());
 }
 
-void MainWindow::on_openButton_clicked() {
+void MainWindow::on_btn_open_clicked() {
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
@@ -75,8 +78,7 @@ void MainWindow::on_openButton_clicked() {
 }
 
 
-void MainWindow::on_saveButton_clicked()
-{
+void MainWindow::on_btn_save_clicked() {
     QString imagePath = QFileDialog::getSaveFileName(
             this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
@@ -86,8 +88,7 @@ void MainWindow::on_saveButton_clicked()
 }
 
 
-void MainWindow::show_pixmap()
-{
+void MainWindow::show_pixmap() {
     if (! m_scene) {
         m_scene = new QGraphicsScene(this);
     }
@@ -97,13 +98,24 @@ void MainWindow::show_pixmap()
 
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
+
+    m_processing = false;
 }
 
+
 void MainWindow::reprocess_image(int scale, int quality) {
+    if (m_processing) {
+        return;
+    }
+
+    QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
+}
+
+void MainWindow::reprocess_image_impl(int scale, int quality) {
     rescale_image(scale);
     requality_image(quality);
 
-    show_pixmap();
+    QMetaObject::invokeMethod(this, "show_pixmap");
 }
 
 void MainWindow::rescale_image(int scale) {
@@ -120,8 +132,6 @@ void MainWindow::rescale_image(int scale) {
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
     ui->lbl_scale->setText(QString::number(scale));
-
-
 }
 
 void MainWindow::requality_image(int quality) {
