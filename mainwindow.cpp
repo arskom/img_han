@@ -32,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
