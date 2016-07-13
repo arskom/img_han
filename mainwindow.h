@@ -19,6 +19,8 @@ public:
 
 protected:
     virtual void showEvent(QShowEvent *e) override;
+    virtual void wheelEvent(QWheelEvent* event);
+    bool eventFilter(QObject *object, QEvent *event);
 
 private slots:
     void on_btn_open_clicked();
@@ -32,6 +34,10 @@ private slots:
 
     // runs in concurrent thread
     void reprocess_image_impl(int scale, int quality);
+
+    void on_btn_zoomin_clicked();
+
+    void on_btn_zoomout_clicked();
 
 private:
     void reprocess_image(int scale, int quality);

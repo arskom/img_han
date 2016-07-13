@@ -4,11 +4,13 @@
 
 #include <QtConcurrent/QtConcurrentRun>
 
+#include <QEvent>
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
 #include <QBuffer>
 #include <QScrollBar>
+#include <QWheelEvent>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QImageReader>
@@ -99,6 +101,7 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
+    ui->graphicsView->viewport()->installEventFilter(this);
     m_processing = false;
 }
 
@@ -131,6 +134,8 @@ void MainWindow::rescale_image(int scale) {
     m_pixmap = QPixmap::fromImage(
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
+
+
     ui->lbl_scale->setText(QString::number(scale));
 }
 
@@ -148,7 +153,10 @@ void MainWindow::requality_image(int quality) {
     image.loadFromData(ba);
     m_pixmap = QPixmap::fromImage(image);
 
-    ui->lbl_quality->setText(QString::number(quality));
+
+    int sld_value_quality = ui->sld_quality->value();
+
+    ui->lbl_quality->setText(QString::number(sld_value_quality));
 
     double comp_p = 100.0 * l_size_b / m_orig_size;
 
@@ -170,4 +178,45 @@ void MainWindow::on_sld_quality_valueChanged(int value) {
 
 void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
+}
+
+
+void MainWindow::wheelEvent(QWheelEvent *event){
+
+        ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+        double scaleFactor = 1.15;
+        if(event->delta() > 0) {
+            // Zoom in
+            ui->graphicsView-> scale(scaleFactor, scaleFactor);
+
+        } else {
+            // Zooming out
+             ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+        }
+
+}
+
+
+
+void MainWindow::on_btn_zoomin_clicked()
+{
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    double scaleFactor = 1.15;
+    ui->graphicsView-> scale(scaleFactor, scaleFactor);
+}
+
+void MainWindow::on_btn_zoomout_clicked()
+{
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    double scaleFactor = 1.15;
+    ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+}
+
+
+bool MainWindow::eventFilter(QObject *object, QEvent *event)
+{
+    if (object == ui->graphicsView->viewport() && event->type() == QEvent::Wheel) {
+        return true;
+    }
+    return false;
 }
