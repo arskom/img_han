@@ -73,6 +73,8 @@ void MainWindow::on_btn_open_clicked() {
     ui->lbl_width->setText(QString::number(m_image->width()));
     ui->lbl_height->setText(QString::number(m_image->height()));
 
+    ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
+
     m_pixmap = QPixmap::fromImage(*m_image);
     show_pixmap();
 
@@ -106,6 +108,8 @@ void MainWindow::show_pixmap() {
 
     ui->graphicsView->viewport()->installEventFilter(this);
 
+    ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
+
     m_processing = false;
 }
 
@@ -115,6 +119,7 @@ void MainWindow::reprocess_image(int scale, int quality) {
         return;
     }
 
+    ui->lbl_running->setStyleSheet("QLabel { background-color : red; color : black; }");
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
 
@@ -136,7 +141,6 @@ void MainWindow::rescale_image(int scale) {
 
     m_pixmap = QPixmap::fromImage(
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
-
 
 
     ui->lbl_scale->setText(QString::number(scale));

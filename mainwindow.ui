@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>530</height>
+    <width>889</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,21 +20,41 @@
    <layout class="QGridLayout" name="gridLayout_2">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
-      <item row="19" column="8">
+      <item row="55" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>          Quality:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Image size (kB):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="9">
        <widget class="QPushButton" name="btn_open">
         <property name="text">
          <string>&amp;Open</string>
         </property>
        </widget>
       </item>
-      <item row="20" column="8">
+      <item row="58" column="9">
        <widget class="QPushButton" name="btn_save">
         <property name="text">
          <string>&amp;Save</string>
         </property>
        </widget>
       </item>
-      <item row="18" column="0">
+      <item row="56" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>          Scale (%):</string>
@@ -44,7 +64,34 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" rowspan="17" colspan="9">
+      <item row="58" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Compression (%):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="8" rowspan="2">
+       <widget class="QLabel" name="lbl_running">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="1">
+       <widget class="QLabel" name="lbl_quality">
+        <property name="text">
+         <string>50</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" rowspan="54" colspan="10">
        <widget class="QGraphicsView" name="graphicsView">
         <property name="cursor" stdset="0">
          <cursorShape>ArrowCursor</cursorShape>
@@ -87,56 +134,7 @@
         </property>
        </widget>
       </item>
-      <item row="20" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="text">
-         <string>Compression (%):</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="17" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>          Quality:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="19" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Image size (kB):</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="btn_zoomout">
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>30</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>-</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
+      <item row="28" column="0">
        <widget class="QPushButton" name="btn_zoomin">
         <property name="minimumSize">
          <size>
@@ -155,125 +153,26 @@
         </property>
        </widget>
       </item>
-      <item row="17" column="1">
-       <widget class="QLabel" name="lbl_quality">
-        <property name="text">
-         <string>50</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="18" column="1">
-       <widget class="QLabel" name="lbl_scale">
-        <property name="text">
-         <string>100</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="19" column="1">
-       <widget class="QLabel" name="lbl_size">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="29" column="0">
+       <widget class="QPushButton" name="btn_zoomout">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>30</height>
+         </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>120</width>
+          <width>30</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string/>
+         <string>-</string>
         </property>
        </widget>
       </item>
-      <item row="20" column="1">
-       <widget class="QLabel" name="lbl_compression">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="19" column="2">
-       <widget class="QLabel" name="label_4">
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>        Width (px):</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="20" column="2">
-       <widget class="QLabel" name="label_5">
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>       Height (px):</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="19" column="3">
-       <widget class="QLabel" name="lbl_width">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="20" column="3">
-       <widget class="QLabel" name="lbl_height">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="19" column="4" rowspan="2" colspan="4">
-       <widget class="QLabel" name="label_7">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="17" column="2" colspan="7">
-       <widget class="QSlider" name="sld_quality">
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-        <property name="value">
-         <number>50</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="18" column="2" colspan="7">
+      <item row="56" column="2" colspan="8">
        <widget class="QSlider" name="sld_scale">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -310,6 +209,107 @@
         </property>
         <property name="tickPosition">
          <enum>QSlider::NoTicks</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="55" column="2" colspan="8">
+       <widget class="QSlider" name="sld_quality">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+        <property name="value">
+         <number>50</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="2">
+       <widget class="QLabel" name="label_4">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>        Width (px):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="56" column="1">
+       <widget class="QLabel" name="lbl_scale">
+        <property name="text">
+         <string>100</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="1">
+       <widget class="QLabel" name="lbl_size">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>120</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="1">
+       <widget class="QLabel" name="lbl_compression">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="2">
+       <widget class="QLabel" name="label_5">
+        <property name="maximumSize">
+         <size>
+          <width>80</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>       Height (px):</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="58" column="3">
+       <widget class="QLabel" name="lbl_height">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="57" column="3">
+       <widget class="QLabel" name="lbl_width">
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </item>
