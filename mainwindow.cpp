@@ -20,7 +20,7 @@
 #include <QStandardPaths>
 
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     m_scene(nullptr),
     m_image(nullptr),
@@ -31,8 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
 
@@ -69,6 +68,8 @@ void MainWindow::on_btn_open_clicked() {
 
     m_orig_size = QFileInfo(imagePath).size();
 
+    ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
+
     ui->lbl_width->setText(QString::number(m_image->width()));
     ui->lbl_height->setText(QString::number(m_image->height()));
 
@@ -98,10 +99,13 @@ void MainWindow::show_pixmap() {
         m_scene->clear();
     }
 
+    m_pixmap = m_pixmap.scaled(m_image->width(), m_image->height());
+
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
     ui->graphicsView->viewport()->installEventFilter(this);
+
     m_processing = false;
 }
 
@@ -122,7 +126,6 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 }
 
 void MainWindow::rescale_image(int scale) {
-
     int w = m_image->width();
     int h = m_image->height();
     int new_w = (w * scale)/100;
@@ -182,7 +185,6 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
 
 
 void MainWindow::wheelEvent(QWheelEvent *event){
-
         ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
         double scaleFactor = 1.15;
         if(event->delta() > 0) {
@@ -196,26 +198,21 @@ void MainWindow::wheelEvent(QWheelEvent *event){
 
 }
 
-
-
-void MainWindow::on_btn_zoomin_clicked()
-{
+void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     double scaleFactor = 1.15;
     ui->graphicsView-> scale(scaleFactor, scaleFactor);
 }
 
-void MainWindow::on_btn_zoomout_clicked()
-{
+void MainWindow::on_btn_zoomout_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     double scaleFactor = 1.15;
     ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 }
 
 
-bool MainWindow::eventFilter(QObject *object, QEvent *event)
-{
-    if (object == ui->graphicsView->viewport() && event->type() == QEvent::Wheel) {
+bool MainWindow::eventFilter(QObject *object, QEvent *event){
+    if (object == ui->graphicsView->viewport() && event->type() == QEvent::Wheel){
         return true;
     }
     return false;
