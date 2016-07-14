@@ -29,14 +29,14 @@ private slots:
     void on_sld_quality_valueChanged(int value);
     void on_sld_scale_valueChanged(int value);
 
+    void on_btn_zoomin_clicked();
+    void on_btn_zoomout_clicked();
+
     // runs in gui thread
     void show_pixmap();
 
     // runs in concurrent thread
     void reprocess_image_impl(int scale, int quality);
-
-    void on_btn_zoomin_clicked();
-    void on_btn_zoomout_clicked();
 
 private:
     void reprocess_image(int scale, int quality);
