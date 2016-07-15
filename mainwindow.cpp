@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
+#include <QMatrix>
 #include <QBuffer>
 #include <QShortcut>
 #include <QScrollBar>
@@ -83,6 +84,7 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
 }
 
 void MainWindow::on_btn_save_clicked() {
@@ -120,6 +122,7 @@ void MainWindow::reprocess_image(int scale, int quality) {
     }
 
     ui->lbl_running->setStyleSheet("QLabel { background-color : red; color : black; }");
+
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
 
@@ -172,7 +175,7 @@ void MainWindow::requality_image(int quality) {
     else if(comp_p<=100) {
         ui->lbl_compression->setText(QString::number(comp_p));
         QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
+        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 }
 
@@ -188,6 +191,7 @@ void MainWindow::wheelEvent(QWheelEvent *event){
     QMainWindow::wheelEvent(event);
 
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+
     double scaleFactor = 1.15;
     if(event->delta() > 0) {
         // Zoom in
@@ -216,4 +220,14 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event){
         return true;
     }
     return false;
+}
+
+void MainWindow::on_btn_rotate_right_clicked()
+{
+    ui->graphicsView->rotate(90);
+}
+
+void MainWindow::on_btn_rotate_left_clicked()
+{
+    ui->graphicsView->rotate(-90);
 }
