@@ -80,6 +80,9 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
+
+
 }
 
 
@@ -120,6 +123,7 @@ void MainWindow::reprocess_image(int scale, int quality) {
     }
 
     ui->lbl_running->setStyleSheet("QLabel { background-color : red; color : black; }");
+
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
 
@@ -175,7 +179,7 @@ void MainWindow::requality_image(int quality) {
     else if(comp_p<=100) {
         ui->lbl_compression->setText(QString::number(comp_p));
         QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0%); color : black; }");
+        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 }
 
@@ -193,7 +197,7 @@ void MainWindow::wheelEvent(QWheelEvent *event){
         double scaleFactor = 1.15;
         if(event->delta() > 0) {
             // Zoom in
-            ui->graphicsView-> scale(scaleFactor, scaleFactor);
+            ui->graphicsView-> scale(scaleFactor,scaleFactor);
 
         } else {
             // Zooming out
