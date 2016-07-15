@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QDebug>
 #include <QBuffer>
+#include <QShortcut>
 #include <QScrollBar>
 #include <QWheelEvent>
 #include <QFileDialog>
@@ -29,9 +30,11 @@ MainWindow::MainWindow(QWidget *parent):
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 }
 
-MainWindow::~MainWindow(){
+MainWindow::~MainWindow() {
     delete ui;
 }
 
@@ -85,7 +88,6 @@ void MainWindow::on_btn_open_clicked() {
 
 }
 
-
 void MainWindow::on_btn_save_clicked() {
     QString imagePath = QFileDialog::getSaveFileName(
             this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
@@ -94,7 +96,6 @@ void MainWindow::on_btn_save_clicked() {
     *m_image = m_pixmap.toImage();
      m_image->save(imagePath);
 }
-
 
 void MainWindow::show_pixmap() {
     if (! m_scene) {
@@ -115,7 +116,6 @@ void MainWindow::show_pixmap() {
 
     m_processing = false;
 }
-
 
 void MainWindow::reprocess_image(int scale, int quality) {
     if (m_processing) {
@@ -146,7 +146,6 @@ void MainWindow::rescale_image(int scale) {
     m_pixmap = QPixmap::fromImage(
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
-
     ui->lbl_scale->setText(QString::number(scale));
 }
 
@@ -164,9 +163,7 @@ void MainWindow::requality_image(int quality) {
     image.loadFromData(ba);
     m_pixmap = QPixmap::fromImage(image);
 
-
-    int sld_value_quality = ui->sld_quality->value();
-
+    auto sld_value_quality = ui->sld_quality->value();
     ui->lbl_quality->setText(QString::number(sld_value_quality));
 
     double comp_p = 100.0 * l_size_b / m_orig_size;
@@ -191,19 +188,20 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
 }
 
-
 void MainWindow::wheelEvent(QWheelEvent *event){
-        ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-        double scaleFactor = 1.15;
-        if(event->delta() > 0) {
-            // Zoom in
-            ui->graphicsView-> scale(scaleFactor,scaleFactor);
+    QMainWindow::wheelEvent(event);
 
-        } else {
-            // Zooming out
-             ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-        }
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
 
+    double scaleFactor = 1.15;
+    if(event->delta() > 0) {
+        // Zoom in
+        ui->graphicsView-> scale(scaleFactor, scaleFactor);
+    }
+    else {
+        // Zooming out
+        ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    }
 }
 
 void MainWindow::on_btn_zoomin_clicked(){
@@ -217,7 +215,6 @@ void MainWindow::on_btn_zoomout_clicked(){
     double scaleFactor = 1.15;
     ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 }
-
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event){
     if (object == ui->graphicsView->viewport() && event->type() == QEvent::Wheel){
