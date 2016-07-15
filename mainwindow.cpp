@@ -8,6 +8,7 @@
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
+#include <QMatrix>
 #include <QBuffer>
 #include <QShortcut>
 #include <QScrollBar>
@@ -83,8 +84,6 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-
-
 
 }
 
@@ -221,4 +220,14 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event){
         return true;
     }
     return false;
+}
+
+void MainWindow::on_btn_rotate_right_clicked()
+{
+    ui->graphicsView->rotate(90);
+}
+
+void MainWindow::on_btn_rotate_left_clicked()
+{
+    ui->graphicsView->rotate(-90);
 }

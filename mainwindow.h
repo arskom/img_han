@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsPixmapItem>
+#include <QMutex>
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsScene)
 
@@ -32,11 +33,15 @@ private slots:
     void on_btn_zoomin_clicked();
     void on_btn_zoomout_clicked();
 
+    void on_btn_rotate_right_clicked();
+    void on_btn_rotate_left_clicked();
+
     // runs in gui thread
     void show_pixmap();
 
     // runs in concurrent thread
     void reprocess_image_impl(int scale, int quality);
+
 
 private:
     void reprocess_image(int scale, int quality);
@@ -47,6 +52,7 @@ private:
 
     bool m_processing;
 
+    QMutex mutex;
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
     QImage  *m_image;
