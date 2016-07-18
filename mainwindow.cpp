@@ -78,19 +78,14 @@ void MainWindow::on_btn_open_clicked() {
 
     m_orig_size = QFileInfo(imagePath).size();
 
-    ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
-
-    ui->lbl_width->setText(QString::number(m_image->width()));
-    ui->lbl_height->setText(QString::number(m_image->height()));
-
-    ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
+    m_current_scale = 100;
+    m_current_size = m_orig_size;
 
     m_pixmap = QPixmap::fromImage(*m_image);
     show_pixmap();
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-
 }
 
 void MainWindow::on_btn_save_clicked() {
@@ -115,24 +110,43 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
+    ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
+    ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
+    ui->lbl_dimensions->setText(
+                QString("%1x%2").arg(m_image->width())
+                                .arg(m_image->height()));
+    ui->lbl_scale->setText(QString::number(m_current_scale));
+
+    auto sld_value_quality = ui->sld_quality->value();
+    double comp_p = 100.0 * m_current_size / m_orig_size;
+
+    ui->lbl_quality->setText(QString::number(sld_value_quality));
+
+    if(comp_p > 100) {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
+    }
+    else if(comp_p<=100) {
+        ui->lbl_compression->setText(QString::number(comp_p));
+        QLabel* m_label = ui->lbl_size;
+        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
+    }
 
     m_processing = false;
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
-
     if (m_processing) {
         return;
     }
 
-    ui->lbl_running->setStyleSheet("QLabel { background-color : red; color : black; }");
+    ui->lbl_busy->setStyleSheet("QLabel { background-color : red; color : black; }");
 
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
 
 void MainWindow::reprocess_image_impl(int scale, int quality) {
-
     rescale_image(scale);
     requality_image(quality);
 
@@ -144,14 +158,10 @@ void MainWindow::rescale_image(int scale) {
     int h = m_image->height();
     int new_w = (w * scale)/100;
     int new_h = (h * scale)/100;
-
-    ui->lbl_width->setText(QString::number(new_w));
-    ui->lbl_height->setText(QString::number(new_h));
+    m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
                 m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
-
-    ui->lbl_scale->setText(QString::number(scale));
 }
 
 void MainWindow::requality_image(int quality) {
@@ -160,7 +170,7 @@ void MainWindow::requality_image(int quality) {
     buffer.open(QIODevice::WriteOnly);
     m_pixmap.save(&buffer, "WEBP", quality);
 
-    auto l_size_b = buffer.size();
+    m_current_size = buffer.size();
 
     qDebug() << "x = " << buffer.size();
 
@@ -170,22 +180,6 @@ void MainWindow::requality_image(int quality) {
     QImage image;
     image.loadFromData(ba);
     m_pixmap = QPixmap::fromImage(image);
-
-    auto sld_value_quality = ui->sld_quality->value();
-    ui->lbl_quality->setText(QString::number(sld_value_quality));
-
-    double comp_p = 100.0 * l_size_b / m_orig_size;
-
-    if(comp_p>100) {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
-    }
-    else if(comp_p<=100) {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
-        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
-    }
 }
 
 void MainWindow::on_sld_quality_valueChanged(int value) {

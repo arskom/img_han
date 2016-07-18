@@ -52,6 +52,8 @@ private:
     void change_size();
 
     bool m_processing;
+    qint16 m_current_scale;
+    qint64 m_current_size;
 
     std::mutex m_mutex;
     Ui::MainWindow *ui;
