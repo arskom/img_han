@@ -116,10 +116,13 @@ void MainWindow::show_pixmap() {
 
     ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
 
+    std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
 
     if (m_processing) {
         return;
@@ -131,6 +134,8 @@ void MainWindow::reprocess_image(int scale, int quality) {
 }
 
 void MainWindow::reprocess_image_impl(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
 
     rescale_image(scale);
     requality_image(quality);
