@@ -1,8 +1,12 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "wheeledgraphicsview.h"
 
 #include <QtConcurrent/QtConcurrentRun>
+
+#include <mutex>
+#include <string>
+#include <iostream>
 
 #include <QEvent>
 #include <QImage>
@@ -13,6 +17,7 @@
 #include <QShortcut>
 #include <QScrollBar>
 #include <QWheelEvent>
+#include <QMouseEvent>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QImageReader>
@@ -109,14 +114,13 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->graphicsView->viewport()->installEventFilter(this);
-
     ui->lbl_running->setStyleSheet("QLabel { background-color : green; color : black; }");
 
     m_processing = false;
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
     if (m_processing) {
         return;
     }
@@ -127,6 +131,7 @@ void MainWindow::reprocess_image(int scale, int quality) {
 }
 
 void MainWindow::reprocess_image_impl(int scale, int quality) {
+
     rescale_image(scale);
     requality_image(quality);
 
@@ -155,6 +160,9 @@ void MainWindow::requality_image(int quality) {
     m_pixmap.save(&buffer, "WEBP", quality);
 
     auto l_size_b = buffer.size();
+
+    qDebug() << "x = " << buffer.size();
+
     double l_size_kb = buffer.size() / 1024.00;
     ui->lbl_size->setText(QString::number(l_size_kb));
 
@@ -187,21 +195,7 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
 }
 
-void MainWindow::wheelEvent(QWheelEvent *event){
-    QMainWindow::wheelEvent(event);
 
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
-    double scaleFactor = 1.15;
-    if(event->delta() > 0) {
-        // Zoom in
-        ui->graphicsView-> scale(scaleFactor, scaleFactor);
-    }
-    else {
-        // Zooming out
-        ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
-    }
-}
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
@@ -215,19 +209,10 @@ void MainWindow::on_btn_zoomout_clicked(){
     ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
 }
 
-bool MainWindow::eventFilter(QObject *object, QEvent *event){
-    if (object == ui->graphicsView->viewport() && event->type() == QEvent::Wheel){
-        return true;
-    }
-    return false;
-}
-
-void MainWindow::on_btn_rotate_right_clicked()
-{
+void MainWindow::on_btn_rotate_right_clicked(){
     ui->graphicsView->rotate(90);
 }
 
-void MainWindow::on_btn_rotate_left_clicked()
-{
+void MainWindow::on_btn_rotate_left_clicked(){
     ui->graphicsView->rotate(-90);
 }

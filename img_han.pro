@@ -1,3 +1,4 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2016-06-20T09:06:17
@@ -16,9 +17,11 @@ TARGET = deneme2
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    wheeledgraphicsview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    wheeledgraphicsview.h
 
 FORMS    += mainwindow.ui
 
