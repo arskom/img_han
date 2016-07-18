@@ -83,7 +83,7 @@
       </item>
       <item>
        <widget class="QWidget" name="wgt_transform" native="true">
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="lyt_transform">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -161,7 +161,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="verticalSlider">
+          <widget class="QSlider" name="sld_zoom">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>

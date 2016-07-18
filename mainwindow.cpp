@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent):
     ui->setupUi(this);
 
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
+
+    ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
 }
 
 MainWindow::~MainWindow() {
