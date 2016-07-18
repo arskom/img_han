@@ -16,9 +16,11 @@ TARGET = deneme2
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    wheeledgraphicsview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    wheeledgraphicsview.h
 
 FORMS    += mainwindow.ui
 
