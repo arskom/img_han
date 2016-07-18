@@ -82,7 +82,7 @@
        </widget>
       </item>
       <item row="1" column="0" rowspan="59" colspan="11">
-       <widget class="QGraphicsView" name="graphicsView">
+       <widget class="WheeledGraphicsView" name="graphicsView">
         <property name="cursor" stdset="0">
          <cursorShape>ArrowCursor</cursorShape>
         </property>
@@ -117,7 +117,7 @@
          <enum>QGraphicsView::NoDrag</enum>
         </property>
         <property name="transformationAnchor">
-         <enum>QGraphicsView::NoAnchor</enum>
+         <enum>QGraphicsView::AnchorUnderMouse</enum>
         </property>
         <property name="resizeAnchor">
          <enum>QGraphicsView::AnchorUnderMouse</enum>
@@ -357,6 +357,13 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>WheeledGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>wheeledgraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
