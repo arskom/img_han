@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>817</width>
+    <width>773</width>
     <height>506</height>
    </rect>
   </property>
@@ -98,6 +98,12 @@
          </property>
          <item>
           <widget class="QLabel" name="lbl_busy">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -118,7 +124,11 @@
             </size>
            </property>
            <property name="text">
-            <string>&gt;</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resource/resource.qrc">
+             <normaloff>:/images/right.png</normaloff>:/images/right.png</iconset>
            </property>
           </widget>
          </item>
@@ -137,7 +147,11 @@
             </size>
            </property>
            <property name="text">
-            <string>&lt;</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resource/resource.qrc">
+             <normaloff>:/images/left.png</normaloff>:/images/left.png</iconset>
            </property>
           </widget>
          </item>
@@ -390,6 +404,8 @@
    <header>wheeledgraphicsview.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
