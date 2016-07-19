@@ -2,5 +2,6 @@
     <qresource prefix="/images">
         <file>left.png</file>
         <file>right.png</file>
+        <file>loading.gif</file>
     </qresource>
 </RCC>

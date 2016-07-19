@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 
+#include <QMovie>
 #include <QEvent>
 #include <QImage>
 #include <QLabel>
@@ -26,6 +27,7 @@
 #include <QGraphicsScene>
 #include <QStandardPaths>
 
+#define Q_INIT_RESOURCE(resource)
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -40,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent):
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
+
 }
 
 MainWindow::~MainWindow() {
@@ -115,7 +118,6 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
                     QString("%1x%2").arg(m_new_w)
@@ -145,6 +147,10 @@ void MainWindow::show_pixmap() {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
 
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->stop();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
 
 }
 
@@ -155,7 +161,10 @@ void MainWindow::reprocess_image(int scale, int quality) {
         return;
     }
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : red; color : black; }");
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->start();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
 
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }

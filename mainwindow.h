@@ -10,7 +10,6 @@
 
 QT_FORWARD_DECLARE_CLASS(QGraphicsScene)
 
-
 namespace Ui {
 class MainWindow;
 }
@@ -58,6 +57,7 @@ private:
     int m_new_w;
     int m_new_h;
 
+    QMovie *m_mv;
     std::mutex m_mutex;
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
