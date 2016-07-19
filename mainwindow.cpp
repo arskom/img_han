@@ -1,4 +1,3 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "wheeledgraphicsview.h"
@@ -9,6 +8,7 @@
 #include <string>
 #include <iostream>
 
+#include <QMovie>
 #include <QEvent>
 #include <QImage>
 #include <QLabel>
@@ -27,6 +27,7 @@
 #include <QGraphicsScene>
 #include <QStandardPaths>
 
+#define Q_INIT_RESOURCE(resource)
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -41,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent):
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
+
 }
 
 MainWindow::~MainWindow() {
@@ -88,6 +90,10 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    ui->lbl_dimensions->setText(
+                    QString("%1x%2").arg(m_image->width())
+                                    .arg(m_image->height()));
 }
 
 void MainWindow::on_btn_save_clicked() {
@@ -112,11 +118,11 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
-                QString("%1x%2").arg(m_image->width())
-                                .arg(m_image->height()));
+                    QString("%1x%2").arg(m_new_w)
+                                    .arg(m_new_h));
+
     ui->lbl_scale->setText(QString::number(m_current_scale));
 
     auto sld_value_quality = ui->sld_quality->value();
@@ -135,20 +141,37 @@ void MainWindow::show_pixmap() {
         m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 
+    double l_size_kb = m_current_size / 1024.00;
+    ui->lbl_size->setText(QString::number(l_size_kb));
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
+
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->stop();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
+
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     if (m_processing) {
         return;
     }
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : red; color : black; }");
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->start();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
 
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
 
 void MainWindow::reprocess_image_impl(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     rescale_image(scale);
     requality_image(quality);
 
@@ -158,12 +181,15 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 void MainWindow::rescale_image(int scale) {
     int w = m_image->width();
     int h = m_image->height();
-    int new_w = (w * scale)/100;
-    int new_h = (h * scale)/100;
+
+    m_new_w = (w * scale)/100;
+    m_new_h = (h * scale)/100;
+
+    qDebug() << "a" << m_new_w << "b" << m_new_h ;
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
-                m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+                m_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void MainWindow::requality_image(int quality) {
@@ -175,9 +201,6 @@ void MainWindow::requality_image(int quality) {
     m_current_size = buffer.size();
 
     qDebug() << "x = " << buffer.size();
-
-    double l_size_kb = buffer.size() / 1024.00;
-    ui->lbl_size->setText(QString::number(l_size_kb));
 
     QImage image;
     image.loadFromData(ba);
@@ -191,8 +214,6 @@ void MainWindow::on_sld_quality_valueChanged(int value) {
 void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
 }
-
-
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
