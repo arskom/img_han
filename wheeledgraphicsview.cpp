@@ -9,6 +9,7 @@ const double WheeledGraphicsView::ZOOM_RATIO_PER_WHEEL_TICK = 1.15;
 
 
 WheeledGraphicsView::WheeledGraphicsView(QWidget *parent) : QGraphicsView(parent){
+
 }
 
 void WheeledGraphicsView::wheelEvent(QWheelEvent *event){

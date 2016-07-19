@@ -54,6 +54,7 @@ private:
     bool m_processing;
     qint16 m_current_scale;
     qint64 m_current_size;
+
     int new_w;
     int new_h;
 

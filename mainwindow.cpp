@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent):
     ui->setupUi(this);
 
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
+
+    ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
 }
 
 MainWindow::~MainWindow() {
@@ -80,21 +82,11 @@ void MainWindow::on_btn_open_clicked() {
     m_current_scale = 100;
     m_current_size = m_orig_size;
 
-    qDebug() << "w" << m_image->width() << "h" << m_image->height();
-
-    ui->lbl_dimensions->setText(
-                QString("%1x%2").arg(m_image->width())
-                                .arg(m_image->height()));
-
     m_pixmap = QPixmap::fromImage(*m_image);
     show_pixmap();
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-
-    ui->lbl_dimensions->setText(
-                QString("%1x%2").arg(m_image->width())
-                                .arg(m_image->height()));
 }
 
 void MainWindow::on_btn_save_clicked() {
@@ -122,8 +114,10 @@ void MainWindow::show_pixmap() {
     ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
-                QString("%1x%2").arg(new_w)
-                                .arg(new_h));
+
+    QString("%1x%2").arg(new_w)
+                    .arg(new_h));
+
     ui->lbl_scale->setText(QString::number(m_current_scale));
 
     auto sld_value_quality = ui->sld_quality->value();
@@ -173,6 +167,7 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 void MainWindow::rescale_image(int scale) {
     int w = m_image->width();
     int h = m_image->height();
+
     new_w = (w * scale)/100;
     new_h = (h * scale)/100;
 
@@ -205,8 +200,6 @@ void MainWindow::on_sld_quality_valueChanged(int value) {
 void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
 }
-
-
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
