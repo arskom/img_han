@@ -5,6 +5,9 @@
 #include <QGraphicsPixmapItem>
 #include <QMutex>
 
+#include <string>
+#include <mutex>
+
 QT_FORWARD_DECLARE_CLASS(QGraphicsScene)
 
 
@@ -20,8 +23,6 @@ public:
 
 protected:
     virtual void showEvent(QShowEvent *e) override;
-    virtual void wheelEvent(QWheelEvent* event);
-    bool eventFilter(QObject *object, QEvent *event);
 
 private slots:
     void on_btn_open_clicked();
@@ -51,8 +52,12 @@ private:
     void change_size();
 
     bool m_processing;
+    qint16 m_current_scale;
+    qint64 m_current_size;
+    int new_w;
+    int new_h;
 
-    QMutex mutex;
+    std::mutex m_mutex;
     Ui::MainWindow *ui;
     QPixmap m_pixmap;
     QImage  *m_image;
