@@ -87,6 +87,10 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    ui->lbl_dimensions->setText(
+                    QString("%1x%2").arg(m_image->width())
+                                    .arg(m_image->height()));
 }
 
 void MainWindow::on_btn_save_clicked() {
@@ -114,9 +118,8 @@ void MainWindow::show_pixmap() {
     ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
-
-    QString("%1x%2").arg(new_w)
-                    .arg(new_h));
+                    QString("%1x%2").arg(m_new_w)
+                                    .arg(m_new_h));
 
     ui->lbl_scale->setText(QString::number(m_current_scale));
 
@@ -141,6 +144,8 @@ void MainWindow::show_pixmap() {
 
     std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
+
+
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
@@ -168,14 +173,14 @@ void MainWindow::rescale_image(int scale) {
     int w = m_image->width();
     int h = m_image->height();
 
-    new_w = (w * scale)/100;
-    new_h = (h * scale)/100;
+    m_new_w = (w * scale)/100;
+    m_new_h = (h * scale)/100;
 
-    qDebug() << "a" << new_w << "b" << new_h ;
+    qDebug() << "a" << m_new_w << "b" << m_new_h ;
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
-                m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+                m_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void MainWindow::requality_image(int quality) {

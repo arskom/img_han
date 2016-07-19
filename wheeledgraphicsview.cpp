@@ -13,6 +13,7 @@ WheeledGraphicsView::WheeledGraphicsView(QWidget *parent) : QGraphicsView(parent
 }
 
 void WheeledGraphicsView::wheelEvent(QWheelEvent *event){
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     if(event->orientation() == Qt::Horizontal) {
         event->ignore();
     }

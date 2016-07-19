@@ -55,8 +55,8 @@ private:
     qint16 m_current_scale;
     qint64 m_current_size;
 
-    int new_w;
-    int new_h;
+    int m_new_w;
+    int m_new_h;
 
     std::mutex m_mutex;
     Ui::MainWindow *ui;
