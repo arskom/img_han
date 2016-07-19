@@ -91,6 +91,10 @@ void MainWindow::on_btn_open_clicked() {
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    ui->lbl_dimensions->setText(
+                QString("%1x%2").arg(m_image->width())
+                                .arg(m_image->height()));
 }
 
 void MainWindow::on_btn_save_clicked() {
