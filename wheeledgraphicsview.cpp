@@ -1,9 +1,10 @@
 #include "wheeledgraphicsview.h"
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
-#include <QGraphicsView>
-#include <QWheelEvent>
 #include <QScrollBar>
+#include <QWheelEvent>
+#include <QGraphicsView>
 
 const double WheeledGraphicsView::ZOOM_RATIO_PER_WHEEL_TICK = 1.15;
 
