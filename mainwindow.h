@@ -32,6 +32,7 @@ private slots:
 
     void on_btn_zoomin_clicked();
     void on_btn_zoomout_clicked();
+    void on_sld_zoom_valueChanged(int value);
 
     void on_btn_rotate_right_clicked();
     void on_btn_rotate_left_clicked();
@@ -55,6 +56,8 @@ private:
 
     int m_new_w;
     int m_new_h;
+    int m_sld_zoom_value;
+    qreal m_ZoomFactor;
 
     QMovie *m_mv;
     std::mutex m_mutex;

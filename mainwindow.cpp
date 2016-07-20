@@ -5,6 +5,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 
 #include <mutex>
+#include <math.h>
 #include <string>
 #include <iostream>
 
@@ -42,7 +43,6 @@ MainWindow::MainWindow(QWidget *parent):
     new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
 
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
-
 }
 
 MainWindow::~MainWindow() {
@@ -100,6 +100,11 @@ void MainWindow::on_btn_save_clicked() {
     QString imagePath = QFileDialog::getSaveFileName(
             this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
+
+    if (imagePath.isEmpty()) {
+        qDebug() << "Empty string returned";
+        return;
+    }
 
     *m_image = m_pixmap.toImage();
      m_image->save(imagePath);
@@ -217,14 +222,16 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    double scaleFactor = 1.15;
-    ui->graphicsView-> scale(scaleFactor, scaleFactor);
+    int val = ui->sld_zoom->value();
+    val = val + 5;
+    ui->sld_zoom->setValue(val);
 }
 
 void MainWindow::on_btn_zoomout_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    double scaleFactor = 1.15;
-    ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    int val = ui->sld_zoom->value();
+    val = val - 5;
+    ui->sld_zoom->setValue(val);
 }
 
 void MainWindow::on_btn_rotate_right_clicked(){
@@ -233,4 +240,17 @@ void MainWindow::on_btn_rotate_right_clicked(){
 
 void MainWindow::on_btn_rotate_left_clicked(){
     ui->graphicsView->rotate(-90);
+}
+
+void MainWindow::on_sld_zoom_valueChanged(int value){
+
+    m_sld_zoom_value = value;
+    m_ZoomFactor = pow(10,((value-100) / 100.0));
+    qDebug() << "factor" << m_ZoomFactor << "value" << value;
+
+    QMatrix matrix;
+    matrix.scale(m_ZoomFactor, m_ZoomFactor);
+
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    ui->graphicsView->setMatrix(matrix);
 }
