@@ -42,7 +42,6 @@ private slots:
     // runs in concurrent thread
     void reprocess_image_impl(int scale, int quality);
 
-
 private:
     void reprocess_image(int scale, int quality);
     void rescale_image(int);
