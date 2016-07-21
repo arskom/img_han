@@ -166,6 +166,10 @@ void MainWindow::show_pixmap() {
 
 void MainWindow::reprocess_image(int scale, int quality) {
 
+    if (m_imagePath.isEmpty()) {
+        ui->sld_scale->setValue(100);
+        ui->sld_quality->setValue(50);
+        return;
     }
 
     std::lock_guard<std::mutex> guard(m_mutex);
@@ -249,6 +253,10 @@ void MainWindow::on_btn_rotate_left_clicked(){
 }
 
 void MainWindow::on_sld_zoom_valueChanged(int value){
+    if (m_imagePath.isEmpty()) {
+        ui->sld_zoom->setValue(100);
+        return;
+    }
 
     m_sld_zoom_value = value;
     m_ZoomFactor = pow(10,((value-100) / 100.0));
