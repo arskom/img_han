@@ -513,6 +513,9 @@
    <property name="toolTip">
     <string>Save As...</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionAbout_Us">
    <property name="text">
