@@ -12,6 +12,9 @@ public:
 
     explicit WheeledGraphicsView(QWidget *parent = 0);
 
+    QSlider *slider() const;
+    void setSlider(QSlider *slider);
+
 protected:
     virtual void wheelEvent(QWheelEvent* event) override;
 

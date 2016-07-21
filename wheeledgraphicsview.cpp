@@ -35,4 +35,3 @@ QSlider *WheeledGraphicsView::slider() const {
 void WheeledGraphicsView::setSlider(QSlider *slider) {
     m_slider = slider;
 }
-
