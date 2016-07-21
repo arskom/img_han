@@ -26,12 +26,12 @@ void WheeledGraphicsView::wheelEvent(QWheelEvent *event){
     else {
         if(event->delta() < 0){
             int val = m_slider->value();
-            val = val - 5;
+            val = val - 3;
             m_slider->setValue(val);
         }
         else if(event->delta() > 0){
             int val = m_slider->value();
-            val = val + 5;
+            val = val + 3;
             m_slider->setValue(val);
         }
     }

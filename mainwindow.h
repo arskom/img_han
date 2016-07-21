@@ -60,6 +60,7 @@ private:
     int m_sld_zoom_value;
     qreal m_ZoomFactor;
 
+    QString m_imagePath;
     QMovie *m_mv;
     std::mutex m_mutex;
     Ui::MainWindow *ui;

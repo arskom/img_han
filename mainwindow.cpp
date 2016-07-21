@@ -17,10 +17,7 @@
 #include <QMatrix>
 #include <QBuffer>
 #include <QSlider>
-#include <QShortcut>
 #include <QScrollBar>
-#include <QWheelEvent>
-#include <QMouseEvent>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QImageReader>
@@ -67,21 +64,21 @@ void MainWindow::on_actionOpen_triggered(){
             this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
 
-    if (imagePath.isEmpty()) {
+    if (m_imagePath.isEmpty()) {
         qDebug() << "Empty string returned";
         return;
     }
 
-    if (! QFileInfo(imagePath).isReadable()) {
+    if (! QFileInfo(m_imagePath).isReadable()) {
         qDebug() << "File not readable";
         QMessageBox::critical(this, tr("Critical Error"), tr("File is not readable"));
         return;
     }
 
     m_image = new QImage();
-    m_image->load(imagePath);
+    m_image->load(m_imagePath);
 
-    m_orig_size = QFileInfo(imagePath).size();
+    m_orig_size = QFileInfo(m_imagePath).size();
 
     m_current_scale = 100;
     m_current_size = m_orig_size;
@@ -145,12 +142,12 @@ void MainWindow::show_pixmap() {
 
     if(comp_p > 100) {
         ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
+        QLabel* m_label = ui->lbl_compression;
         m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
     }
     else if(comp_p<=100) {
         ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
+        QLabel* m_label = ui->lbl_compression;
         m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 
@@ -168,6 +165,8 @@ void MainWindow::show_pixmap() {
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
+    }
 
     std::lock_guard<std::mutex> guard(m_mutex);
     if (m_processing) {
@@ -230,14 +229,14 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     int val = ui->sld_zoom->value();
-    val = val + 5;
+    val = val + 3;
     ui->sld_zoom->setValue(val);
 }
 
 void MainWindow::on_btn_zoomout_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
     int val = ui->sld_zoom->value();
-    val = val - 5;
+    val = val - 3;
     ui->sld_zoom->setValue(val);
 }
 
