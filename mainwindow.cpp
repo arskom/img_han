@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QMatrix>
 #include <QBuffer>
+#include <QSlider>
 #include <QShortcut>
 #include <QScrollBar>
 #include <QWheelEvent>
@@ -192,7 +193,6 @@ void MainWindow::rescale_image(int scale) {
     m_new_w = (w * scale)/100;
     m_new_h = (h * scale)/100;
 
-    qDebug() << "a" << m_new_w << "b" << m_new_h ;
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
@@ -207,7 +207,7 @@ void MainWindow::requality_image(int quality) {
 
     m_current_size = buffer.size();
 
-    qDebug() << "x = " << buffer.size();
+    qDebug() << "image size(b) = " << buffer.size();
 
     QImage image;
     image.loadFromData(ba);
@@ -248,11 +248,11 @@ void MainWindow::on_sld_zoom_valueChanged(int value){
 
     m_sld_zoom_value = value;
     m_ZoomFactor = pow(10,((value-100) / 100.0));
-    qDebug() << "factor" << m_ZoomFactor << "value" << value;
+    qDebug() << "zoom factor = " << m_ZoomFactor << "// zoom slider value = " << value;
 
     QMatrix matrix;
     matrix.scale(m_ZoomFactor, m_ZoomFactor);
 
-    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     ui->graphicsView->setMatrix(matrix);
 }

@@ -74,7 +74,7 @@
          <enum>QGraphicsView::NoDrag</enum>
         </property>
         <property name="transformationAnchor">
-         <enum>QGraphicsView::NoAnchor</enum>
+         <enum>QGraphicsView::AnchorUnderMouse</enum>
         </property>
         <property name="resizeAnchor">
          <enum>QGraphicsView::AnchorUnderMouse</enum>
