@@ -9,7 +9,9 @@
 const double WheeledGraphicsView::ZOOM_RATIO_PER_WHEEL_TICK = 1.15;
 
 
-WheeledGraphicsView::WheeledGraphicsView(QWidget *parent) : QGraphicsView(parent){
+WheeledGraphicsView::WheeledGraphicsView(QWidget *parent)
+        : QGraphicsView(parent)
+        , m_slider(nullptr) {
 
 }
 
@@ -27,3 +29,12 @@ void WheeledGraphicsView::wheelEvent(QWheelEvent *event){
         }
     }
 }
+
+QSlider *WheeledGraphicsView::slider() const {
+    return m_slider;
+}
+
+void WheeledGraphicsView::setSlider(QSlider *slider) {
+    m_slider = slider;
+}
+
