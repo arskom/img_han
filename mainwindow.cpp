@@ -41,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent):
 {
     ui->setupUi(this);
 
-    new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
-
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
 
     ui->graphicsView->setSlider(ui->sld_zoom);
@@ -61,11 +59,11 @@ void MainWindow::showEvent(QShowEvent *e) {
     this->move(desktop_rect.center() - this->rect().center());
 }
 
-void MainWindow::on_btn_open_clicked() {
+void MainWindow::on_actionOpen_triggered(){
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
-    QString imagePath = QFileDialog::getOpenFileName(
+    m_imagePath = QFileDialog::getOpenFileName(
             this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
 
@@ -99,9 +97,12 @@ void MainWindow::on_btn_open_clicked() {
                                     .arg(m_image->height()));
 }
 
-void MainWindow::on_btn_save_clicked() {
-    QString imagePath = QFileDialog::getSaveFileName(
-            this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
+void MainWindow::on_actionSave_As_triggered() {
+    const auto &desktop_abs = QStandardPaths::standardLocations(
+                QStandardPaths::DesktopLocation);
+
+    QString imagePath = QFileDialog::getOpenFileName(
+            this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
 
     if (imagePath.isEmpty()) {
@@ -111,6 +112,10 @@ void MainWindow::on_btn_save_clicked() {
 
     *m_image = m_pixmap.toImage();
      m_image->save(imagePath);
+}
+
+void MainWindow::on_actionExit_triggered(){
+    close();
 }
 
 void MainWindow::show_pixmap() {

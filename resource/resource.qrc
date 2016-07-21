@@ -3,5 +3,8 @@
         <file>left.png</file>
         <file>right.png</file>
         <file>loading.gif</file>
+        <file>open.ico</file>
+        <file>save.ico</file>
+        <file>exit.ico</file>
     </qresource>
 </RCC>
