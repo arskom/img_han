@@ -1,4 +1,3 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "wheeledgraphicsview.h"
@@ -117,8 +116,10 @@ void MainWindow::show_pixmap() {
     ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
-                QString("%1x%2").arg(m_image->width())
-                                .arg(m_image->height()));
+
+    QString("%1x%2").arg(new_w)
+                    .arg(new_h));
+
     ui->lbl_scale->setText(QString::number(m_current_scale));
 
     auto sld_value_quality = ui->sld_quality->value();
@@ -137,10 +138,16 @@ void MainWindow::show_pixmap() {
         m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 
+    double l_size_kb = m_current_size / 1024.00;
+    ui->lbl_size->setText(QString::number(l_size_kb));
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     if (m_processing) {
         return;
     }
@@ -151,6 +158,8 @@ void MainWindow::reprocess_image(int scale, int quality) {
 }
 
 void MainWindow::reprocess_image_impl(int scale, int quality) {
+
+    std::lock_guard<std::mutex> guard(m_mutex);
     rescale_image(scale);
     requality_image(quality);
 
@@ -160,8 +169,11 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 void MainWindow::rescale_image(int scale) {
     int w = m_image->width();
     int h = m_image->height();
-    int new_w = (w * scale)/100;
-    int new_h = (h * scale)/100;
+
+    new_w = (w * scale)/100;
+    new_h = (h * scale)/100;
+
+    qDebug() << "a" << new_w << "b" << new_h ;
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
@@ -178,9 +190,6 @@ void MainWindow::requality_image(int quality) {
 
     qDebug() << "x = " << buffer.size();
 
-    double l_size_kb = buffer.size() / 1024.00;
-    ui->lbl_size->setText(QString::number(l_size_kb));
-
     QImage image;
     image.loadFromData(ba);
     m_pixmap = QPixmap::fromImage(image);
@@ -193,8 +202,6 @@ void MainWindow::on_sld_quality_valueChanged(int value) {
 void MainWindow::on_sld_scale_valueChanged(int scale) {
     reprocess_image(scale, ui->sld_quality->value());
 }
-
-
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
