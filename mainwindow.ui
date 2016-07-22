@@ -39,7 +39,7 @@
           <x>0</x>
           <y>0</y>
           <width>300</width>
-          <height>403</height>
+          <height>380</height>
          </rect>
         </property>
         <attribute name="label">
@@ -51,7 +51,7 @@
            <property name="title">
             <string>Image Information</string>
            </property>
-           <layout class="QGridLayout" name="gridLayout_4">
+           <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,1">
             <item row="0" column="0">
              <widget class="QLabel" name="label_3">
               <property name="text">
@@ -121,7 +121,7 @@
             <item row="2" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>          Scale (%):</string>
+               <string>Scale (%):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -151,7 +151,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>          Quality:</string>
+               <string>Quality:</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
