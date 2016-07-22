@@ -40,8 +40,8 @@ private slots:
     // runs in concurrent thread
     void reprocess_image_impl(int scale, int quality);
 
-    void on_actionOpen_triggered();
-    void on_actionSave_As_triggered();
+    void on_action_open_triggered();
+    void on_action_save_as_triggered();
     void on_actionExit_triggered();
 
 private:

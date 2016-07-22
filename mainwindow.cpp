@@ -41,8 +41,8 @@ MainWindow::MainWindow(QWidget *parent):
 
     ui->graphicsView->setSlider(ui->sld_zoom);
 
-    connect(ui->btn_open, SIGNAL(clicked(bool)), ui->actionOpen, SIGNAL(triggered(bool)));
-    connect(ui->btn_save, SIGNAL(clicked(bool)), ui->actionSave_As, SIGNAL(triggered(bool)));
+    connect(ui->btn_open, SIGNAL(clicked(bool)), ui->action_open, SIGNAL(triggered(bool)));
+    connect(ui->btn_save, SIGNAL(clicked(bool)), ui->action_save_as, SIGNAL(triggered(bool)));
 
     this->setWindowTitle("Arskom EasyCompress");
 }
@@ -66,7 +66,7 @@ void MainWindow::showEvent(QShowEvent *e) {
     }
 }
 
-void MainWindow::on_actionOpen_triggered(){
+void MainWindow::on_action_open_triggered(){
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
@@ -113,7 +113,7 @@ void MainWindow::on_actionOpen_triggered(){
     reprocess_image(ui->sld_scale->value(), ui->sld_quality->value());
 }
 
-void MainWindow::on_actionSave_As_triggered() {
+void MainWindow::on_action_save_as_triggered() {
     if (m_image_path.isEmpty()) {
         qDebug() << "Empty string returned";
         return;

@@ -520,8 +520,8 @@
     <property name="title">
      <string>&amp;File </string>
     </property>
-    <addaction name="actionOpen"/>
-    <addaction name="actionSave_As"/>
+    <addaction name="action_open"/>
+    <addaction name="action_save_as"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -535,7 +535,7 @@
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionOpen">
+  <action name="action_open">
    <property name="icon">
     <iconset resource="resource/resource.qrc">
      <normaloff>:/images/open.ico</normaloff>:/images/open.ico</iconset>
@@ -550,7 +550,7 @@
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionSave_As">
+  <action name="action_save_as">
    <property name="icon">
     <iconset resource="resource/resource.qrc">
      <normaloff>:/images/save.ico</normaloff>:/images/save.ico</iconset>
