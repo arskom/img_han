@@ -190,8 +190,14 @@ void MainWindow::reprocess_image(int scale, int quality) {
 void MainWindow::reprocess_image_impl(int scale, int quality) {
 
     std::lock_guard<std::mutex> guard(m_mutex);
-    rescale_image(scale);
-    requality_image(quality);
+
+    if (! rescale_image(scale)) {
+        return;
+    }
+
+    if (! requality_image(quality)) {
+        return;
+    }
 
     QMetaObject::invokeMethod(this, "show_pixmap");
 }
@@ -209,7 +215,7 @@ void MainWindow::rescale_image(int scale) {
                 m_orig_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
-void MainWindow::requality_image(int quality) {
+bool MainWindow::requality_image(int quality) {
     QByteArray ba;
     QBuffer buffer(&ba);
     buffer.open(QIODevice::WriteOnly);
@@ -222,6 +228,12 @@ void MainWindow::requality_image(int quality) {
     QImage image;
     image.loadFromData(ba);
     m_pixmap = QPixmap::fromImage(image);
+    if (m_pixmap.isNull()) {
+        QMessageBox::critical(this, tr("Critical Error"), tr("Image recompression error!"));
+        return false;
+    }
+
+    return true;
 }
 
 void MainWindow::on_sld_quality_valueChanged(int value) {

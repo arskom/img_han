@@ -46,8 +46,8 @@ private slots:
 
 private:
     void reprocess_image(int scale, int quality);
-    void rescale_image(int);
-    void requality_image(int);
+    bool rescale_image(int);
+    bool requality_image(int);
 
     void change_size();
 
