@@ -46,12 +46,12 @@ private slots:
 
 private:
     void reprocess_image(int scale, int quality);
-    void rescale_image(int);
-    void requality_image(int);
+    bool rescale_image(int);
+    bool requality_image(int);
 
     void change_size();
 
-    QString m_imagePath;
+    QString m_image_path;
     std::mutex m_mutex;
     QPixmap m_pixmap;
 
@@ -65,7 +65,7 @@ private:
 
     QGraphicsScene *m_scene;
     QMovie *m_loading_animation;
-    QImage *m_orig_image;
+    QImage m_orig_image;
     qint64 m_orig_size;
     bool m_processing;
     Ui::MainWindow *ui;
