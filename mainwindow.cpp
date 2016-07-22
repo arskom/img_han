@@ -109,6 +109,8 @@ void MainWindow::on_actionOpen_triggered(){
 
     ui->statusBar->showMessage(tr("%1 was opened successfully (%2KB).")
                                             .arg(file_info.baseName()).arg(m_orig_size / 1024.0, 0, 'f', 1));
+
+    reprocess_image(ui->sld_scale->value(), ui->sld_quality->value());
 }
 
 void MainWindow::on_actionSave_As_triggered() {
