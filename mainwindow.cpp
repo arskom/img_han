@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent):
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
 
     ui->graphicsView->setSlider(ui->sld_zoom);
+    this->setWindowTitle("Arskom EasyCompress");
 }
 
 MainWindow::~MainWindow() {
