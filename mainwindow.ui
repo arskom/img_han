@@ -63,7 +63,7 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QLabel" name="lbl_size">
+             <widget class="QLabel" name="lbl_size_kb">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>

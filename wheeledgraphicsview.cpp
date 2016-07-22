@@ -15,6 +15,7 @@ WheeledGraphicsView::WheeledGraphicsView(QWidget *parent)
 
 }
 
+// TODO: Reimplement this using signals and slots
 void WheeledGraphicsView::wheelEvent(QWheelEvent *event){
     if(event->orientation() == Qt::Horizontal) {
         event->ignore();

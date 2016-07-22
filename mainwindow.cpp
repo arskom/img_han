@@ -113,7 +113,7 @@ void MainWindow::on_actionSave_As_triggered() {
     }
 
     m_orig_image = m_pixmap.toImage();
-     m_orig_image->save(imagePath);
+    m_orig_image.save(imagePath);
 }
 
 void MainWindow::on_actionExit_triggered(){
@@ -133,7 +133,7 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_size->setText(QString("%1").arg(m_orig_size/1024.0, 0, 'f', 1));
+    ui->lbl_size_kb->setText(QStringLiteral("%1").arg(m_orig_size / 1024.0, 0, 'f', 1));
     ui->lbl_dimensions->setText(
                     QString("%1x%2").arg(m_new_w)
                                     .arg(m_new_h));
@@ -157,7 +157,7 @@ void MainWindow::show_pixmap() {
     }
 
     double l_size_kb = m_current_size / 1024.00;
-    ui->lbl_size->setText(QString::number(l_size_kb));
+    ui->lbl_size_kb->setText(QString::number(l_size_kb));
 
     std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
@@ -170,7 +170,6 @@ void MainWindow::show_pixmap() {
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
-
     if (m_image_path.isEmpty()) {
         ui->sld_scale->setValue(100);
         ui->sld_quality->setValue(50);
