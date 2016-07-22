@@ -202,7 +202,7 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
     QMetaObject::invokeMethod(this, "show_pixmap");
 }
 
-void MainWindow::rescale_image(int scale) {
+bool MainWindow::rescale_image(int scale) {
     int w = m_orig_image->width();
     int h = m_orig_image->height();
 
@@ -213,6 +213,8 @@ void MainWindow::rescale_image(int scale) {
 
     m_pixmap = QPixmap::fromImage(
                 m_orig_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+
+    return true;
 }
 
 bool MainWindow::requality_image(int quality) {
