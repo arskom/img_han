@@ -438,7 +438,7 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>  F&amp;ile </string>
+     <string>&amp;File </string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionSave_As"/>
