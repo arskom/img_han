@@ -41,6 +41,9 @@ MainWindow::MainWindow(QWidget *parent):
 
     ui->graphicsView->setSlider(ui->sld_zoom);
 
+    connect(ui->btn_open, SIGNAL(clicked(bool)), ui->actionOpen, SIGNAL(triggered(bool)));
+    connect(ui->btn_save, SIGNAL(clicked(bool)), ui->actionSave, SIGNAL(triggered(bool)));
+
     this->setWindowTitle("Arskom EasyCompress");
 }
 
