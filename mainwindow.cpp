@@ -85,6 +85,9 @@ void MainWindow::on_actionOpen_triggered(){
 
     m_orig_size = file_info.size();
 
+    m_new_w = m_orig_image.width();
+    m_new_h = m_orig_image.height();
+
     m_current_scale = 100;
     m_current_size = m_orig_size;
 
@@ -137,6 +140,7 @@ void MainWindow::show_pixmap() {
     m_scene->setSceneRect(m_pixmap.rect());
 
     ui->lbl_size_kb->setText(QStringLiteral("%1").arg(m_orig_size / 1024.0, 0, 'f', 1));
+    ui->lbl_size_mp->setText(QStringLiteral("%1").arg(m_new_w * m_new_h / 1e6, 0, 'f', 1));
     ui->lbl_dimensions->setText(
                     QString("%1x%2").arg(m_new_w)
                                     .arg(m_new_h));
