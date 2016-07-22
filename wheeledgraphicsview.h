@@ -8,8 +8,6 @@ QT_FORWARD_DECLARE_CLASS(QSlider)
 class WheeledGraphicsView : public QGraphicsView {
     Q_OBJECT
 public:
-    static const double ZOOM_RATIO_PER_WHEEL_TICK;
-
     explicit WheeledGraphicsView(QWidget *parent = 0);
 
     QSlider *slider() const;

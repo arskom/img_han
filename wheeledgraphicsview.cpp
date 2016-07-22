@@ -1,11 +1,12 @@
 #include "wheeledgraphicsview.h"
 #include "mainwindow.h"
+#include "ui_mainwindow.h"
 
-#include <QGraphicsView>
-#include <QWheelEvent>
+#include <QDebug>
+#include <QSlider>
 #include <QScrollBar>
-
-const double WheeledGraphicsView::ZOOM_RATIO_PER_WHEEL_TICK = 1.15;
+#include <QWheelEvent>
+#include <QGraphicsView>
 
 
 WheeledGraphicsView::WheeledGraphicsView(QWidget *parent)
@@ -19,11 +20,15 @@ void WheeledGraphicsView::wheelEvent(QWheelEvent *event){
         event->ignore();
     }
     else {
-        if(event->delta() > 0) {
-            scale(ZOOM_RATIO_PER_WHEEL_TICK, ZOOM_RATIO_PER_WHEEL_TICK);
+        if(event->delta() < 0){
+            int val = m_slider->value();
+            val = val - 3;
+            m_slider->setValue(val);
         }
-        else {
-            scale(1.0 / ZOOM_RATIO_PER_WHEEL_TICK, 1.0 / ZOOM_RATIO_PER_WHEEL_TICK);
+        else if(event->delta() > 0){
+            int val = m_slider->value();
+            val = val + 3;
+            m_slider->setValue(val);
         }
     }
 }

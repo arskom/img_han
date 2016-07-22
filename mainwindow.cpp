@@ -5,19 +5,19 @@
 #include <QtConcurrent/QtConcurrentRun>
 
 #include <mutex>
+#include <math.h>
 #include <string>
 #include <iostream>
 
+#include <QMovie>
 #include <QEvent>
 #include <QImage>
 #include <QLabel>
 #include <QDebug>
 #include <QMatrix>
 #include <QBuffer>
-#include <QShortcut>
+#include <QSlider>
 #include <QScrollBar>
-#include <QWheelEvent>
-#include <QMouseEvent>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QImageReader>
@@ -26,6 +26,7 @@
 #include <QGraphicsScene>
 #include <QStandardPaths>
 
+#define Q_INIT_RESOURCE(resource)
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
@@ -37,11 +38,11 @@ MainWindow::MainWindow(QWidget *parent):
 {
     ui->setupUi(this);
 
-    new QShortcut(Qt::CTRL | Qt::Key_Q, this, SLOT(close()));
-
     ui->lyt_transform->setAlignment(ui->sld_zoom, Qt::AlignHCenter);
 
     ui->graphicsView->setSlider(ui->sld_zoom);
+
+    this->setWindowTitle("Arskom EasyCompress");
 }
 
 MainWindow::~MainWindow() {
@@ -57,7 +58,45 @@ void MainWindow::showEvent(QShowEvent *e) {
     this->move(desktop_rect.center() - this->rect().center());
 }
 
-void MainWindow::on_btn_open_clicked() {
+void MainWindow::on_actionOpen_triggered(){
+    const auto &desktop_abs = QStandardPaths::standardLocations(
+                QStandardPaths::DesktopLocation);
+
+    m_imagePath = QFileDialog::getOpenFileName(
+            this, tr("Open File"), desktop_abs.first(),
+            tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
+
+    if (m_imagePath.isEmpty()) {
+        qDebug() << "Empty string returned";
+        return;
+    }
+
+    if (! QFileInfo(m_imagePath).isReadable()) {
+        qDebug() << "File not readable";
+        QMessageBox::critical(this, tr("Critical Error"), tr("File is not readable"));
+        return;
+    }
+
+    m_image = new QImage();
+    m_image->load(m_imagePath);
+
+    m_orig_size = QFileInfo(m_imagePath).size();
+
+    m_current_scale = 100;
+    m_current_size = m_orig_size;
+
+    m_pixmap = QPixmap::fromImage(*m_image);
+    show_pixmap();
+
+    ui->graphicsView->setScene(m_scene);
+    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
+
+    ui->lbl_dimensions->setText(
+                    QString("%1x%2").arg(m_image->width())
+                                    .arg(m_image->height()));
+}
+
+void MainWindow::on_actionSave_As_triggered() {
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
@@ -70,34 +109,12 @@ void MainWindow::on_btn_open_clicked() {
         return;
     }
 
-    if (! QFileInfo(imagePath).isReadable()) {
-        qDebug() << "File not readable";
-        QMessageBox::critical(this, tr("Critical Error"), tr("File is not readable"));
-        return;
-    }
-
-    m_image = new QImage();
-    m_image->load(imagePath);
-
-    m_orig_size = QFileInfo(imagePath).size();
-
-    m_current_scale = 100;
-    m_current_size = m_orig_size;
-
-    m_pixmap = QPixmap::fromImage(*m_image);
-    show_pixmap();
-
-    ui->graphicsView->setScene(m_scene);
-    ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
-}
-
-void MainWindow::on_btn_save_clicked() {
-    QString imagePath = QFileDialog::getSaveFileName(
-            this,tr("Save File"),/*QDir::rootPath()*/ "/home/arda/Masaüstü",
-            tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
-
     *m_image = m_pixmap.toImage();
      m_image->save(imagePath);
+}
+
+void MainWindow::on_actionExit_triggered(){
+    close();
 }
 
 void MainWindow::show_pixmap() {
@@ -113,12 +130,10 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : green; color : black; }");
     ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
     ui->lbl_dimensions->setText(
-
-    QString("%1x%2").arg(new_w)
-                    .arg(new_h));
+                    QString("%1x%2").arg(m_new_w)
+                                    .arg(m_new_h));
 
     ui->lbl_scale->setText(QString::number(m_current_scale));
 
@@ -129,12 +144,12 @@ void MainWindow::show_pixmap() {
 
     if(comp_p > 100) {
         ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
+        QLabel* m_label = ui->lbl_compression;
         m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
     }
     else if(comp_p<=100) {
         ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_size;
+        QLabel* m_label = ui->lbl_compression;
         m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
     }
 
@@ -143,16 +158,31 @@ void MainWindow::show_pixmap() {
 
     std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
+
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->stop();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
+
 }
 
 void MainWindow::reprocess_image(int scale, int quality) {
+
+    if (m_imagePath.isEmpty()) {
+        ui->sld_scale->setValue(100);
+        ui->sld_quality->setValue(50);
+        return;
+    }
 
     std::lock_guard<std::mutex> guard(m_mutex);
     if (m_processing) {
         return;
     }
 
-    ui->lbl_busy->setStyleSheet("QLabel { background-color : red; color : black; }");
+    m_mv = new QMovie(":/images/loading.gif");
+    m_mv->start();
+    ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
+    ui->lbl_busy->setMovie(m_mv);
 
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
@@ -170,14 +200,13 @@ void MainWindow::rescale_image(int scale) {
     int w = m_image->width();
     int h = m_image->height();
 
-    new_w = (w * scale)/100;
-    new_h = (h * scale)/100;
+    m_new_w = (w * scale)/100;
+    m_new_h = (h * scale)/100;
 
-    qDebug() << "a" << new_w << "b" << new_h ;
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
-                m_image->scaled(new_w, new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+                m_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void MainWindow::requality_image(int quality) {
@@ -188,7 +217,7 @@ void MainWindow::requality_image(int quality) {
 
     m_current_size = buffer.size();
 
-    qDebug() << "x = " << buffer.size();
+    qDebug() << "image size(b) = " << buffer.size();
 
     QImage image;
     image.loadFromData(ba);
@@ -205,14 +234,16 @@ void MainWindow::on_sld_scale_valueChanged(int scale) {
 
 void MainWindow::on_btn_zoomin_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    double scaleFactor = 1.15;
-    ui->graphicsView-> scale(scaleFactor, scaleFactor);
+    int val = ui->sld_zoom->value();
+    val = val + 3;
+    ui->sld_zoom->setValue(val);
 }
 
 void MainWindow::on_btn_zoomout_clicked(){
     ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorViewCenter);
-    double scaleFactor = 1.15;
-    ui->graphicsView->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    int val = ui->sld_zoom->value();
+    val = val - 3;
+    ui->sld_zoom->setValue(val);
 }
 
 void MainWindow::on_btn_rotate_right_clicked(){
@@ -221,4 +252,21 @@ void MainWindow::on_btn_rotate_right_clicked(){
 
 void MainWindow::on_btn_rotate_left_clicked(){
     ui->graphicsView->rotate(-90);
+}
+
+void MainWindow::on_sld_zoom_valueChanged(int value){
+    if (m_imagePath.isEmpty()) {
+        ui->sld_zoom->setValue(100);
+        return;
+    }
+
+    m_sld_zoom_value = value;
+    m_ZoomFactor = pow(10,((value-100) / 100.0));
+    qDebug() << "zoom factor = " << m_ZoomFactor << "// zoom slider value = " << value;
+
+    QMatrix matrix;
+    matrix.scale(m_ZoomFactor, m_ZoomFactor);
+
+    ui->graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    ui->graphicsView->setMatrix(matrix);
 }
