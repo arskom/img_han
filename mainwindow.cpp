@@ -71,16 +71,18 @@ void MainWindow::on_actionOpen_triggered(){
         return;
     }
 
-    if (! QFileInfo(m_imagePath).isReadable()) {
+    const auto &file_info = QFileInfo(m_image_path);
+
+    if (! file_info.isReadable()) {
         qDebug() << "File not readable";
         QMessageBox::critical(this, tr("Critical Error"), tr("File is not readable"));
         return;
     }
 
     m_orig_image = new QImage();
-    m_orig_image->load(m_imagePath);
+    m_orig_image->load(m_image_path);
 
-    m_orig_size = QFileInfo(m_imagePath).size();
+    m_orig_size = file_info.size();
 
     m_current_scale = 100;
     m_current_size = m_orig_size;
@@ -94,6 +96,8 @@ void MainWindow::on_actionOpen_triggered(){
     ui->lbl_dimensions->setText(
                     QString("%1x%2").arg(m_orig_image->width())
                                     .arg(m_orig_image->height()));
+    ui->statusBar->showMessage(tr("%1 was opened successfully (%2KB).")
+                                            .arg(file_info.baseName()).arg(m_orig_size / 1024.0, 0, 'f', 1));
 }
 
 void MainWindow::on_actionSave_As_triggered() {

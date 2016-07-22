@@ -454,6 +454,7 @@
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="resource/resource.qrc">
