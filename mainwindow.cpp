@@ -153,10 +153,10 @@ void MainWindow::show_pixmap() {
                     QString("%1x%2").arg(m_new_w)
                                     .arg(m_new_h));
 
-    ui->lbl_scale->setText(QString::number(m_current_scale));
+    ui->lbl_scale->setText(QStringLiteral("%1").arg(m_current_scale));
 
     auto sld_value_quality = ui->sld_quality->value();
-    double comp_p = 100.0 * m_current_size / m_orig_size;
+    int comp_p = 100.0 * m_current_size / m_orig_size;
 
     ui->lbl_quality->setText(QString::number(sld_value_quality));
     ui->lbl_compression->setText(QString::number(comp_p));
