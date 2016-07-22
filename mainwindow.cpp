@@ -159,16 +159,16 @@ void MainWindow::show_pixmap() {
     double comp_p = 100.0 * m_current_size / m_orig_size;
 
     ui->lbl_quality->setText(QString::number(sld_value_quality));
+    ui->lbl_compression->setText(QString::number(comp_p));
 
-    if(comp_p > 100) {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_compression;
-        m_label->setStyleSheet("QLabel { background-color : red; color : black; }");
+    if (comp_p == 100) {
+        ui->lbl_compression->setStyleSheet("QLabel { }");
+    }
+    else if(comp_p > 100) {
+        ui->lbl_compression->setStyleSheet("QLabel { color: red; }");
     }
     else if(comp_p<=100) {
-        ui->lbl_compression->setText(QString::number(comp_p));
-        QLabel* m_label = ui->lbl_compression;
-        m_label->setStyleSheet("QLabel { background-color : rgba(0,0,0,0); color : black; }");
+        ui->lbl_compression->setStyleSheet("QLabel { color: green; }");
     }
 
     double l_size_kb = m_current_size / 1024.00;
