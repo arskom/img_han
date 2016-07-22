@@ -281,12 +281,20 @@
              <property name="text">
               <string>Open</string>
              </property>
+             <property name="icon">
+              <iconset resource="resource/resource.qrc">
+               <normaloff>:/images/open.ico</normaloff>:/images/open.ico</iconset>
+             </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btn_save">
              <property name="text">
               <string>Save</string>
+             </property>
+             <property name="icon">
+              <iconset resource="resource/resource.qrc">
+               <normaloff>:/images/save.ico</normaloff>:/images/save.ico</iconset>
              </property>
             </widget>
            </item>
