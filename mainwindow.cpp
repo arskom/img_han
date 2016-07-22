@@ -56,8 +56,14 @@ void MainWindow::showEvent(QShowEvent *e) {
 
     const auto &desktop_rect = QApplication::desktop()->screen()->rect();
 
-    this->resize(desktop_rect.width() * .75, desktop_rect.height() * .75);
-    this->move(desktop_rect.center() - this->rect().center());
+    // TODO: Store last window state and position
+    {
+        this->resize(desktop_rect.width() * .75, desktop_rect.height() * .75);
+        this->move(desktop_rect.center() - this->rect().center());\
+
+        auto toolbox_minw = ui->toolBox->minimumWidth();
+        ui->splitter->setSizes(QList<int>() << toolbox_minw << width() - toolbox_minw);
+    }
 }
 
 void MainWindow::on_actionOpen_triggered(){
