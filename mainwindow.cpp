@@ -130,7 +130,7 @@ void MainWindow::show_pixmap() {
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
 
-    ui->lbl_size->setText(QString::number(m_orig_size/1024.00));
+    ui->lbl_size->setText(QString("%1").arg(m_orig_size/1024.0, 0, 'g', 1));
     ui->lbl_dimensions->setText(
                     QString("%1x%2").arg(m_new_w)
                                     .arg(m_new_h));
