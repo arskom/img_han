@@ -65,7 +65,7 @@ private:
 
     QGraphicsScene *m_scene;
     QMovie *m_loading_animation;
-    QImage *m_orig_image;
+    QImage m_orig_image;
     qint64 m_orig_size;
     bool m_processing;
     Ui::MainWindow *ui;

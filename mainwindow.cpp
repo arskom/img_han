@@ -31,7 +31,6 @@
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     m_scene(nullptr),
-    m_orig_image(nullptr),
     m_orig_size(0),
     m_processing(false),
     ui(new Ui::MainWindow)
@@ -79,23 +78,23 @@ void MainWindow::on_actionOpen_triggered(){
         return;
     }
 
-    m_orig_image = new QImage();
-    m_orig_image->load(m_image_path);
+    m_orig_image.load(m_image_path);
 
     m_orig_size = file_info.size();
 
     m_current_scale = 100;
     m_current_size = m_orig_size;
 
-    m_pixmap = QPixmap::fromImage(*m_orig_image);
+    m_pixmap = QPixmap::fromImage(m_orig_image);
     show_pixmap();
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
     ui->lbl_dimensions->setText(
-                    QString("%1x%2").arg(m_orig_image->width())
-                                    .arg(m_orig_image->height()));
+                    QString("%1x%2").arg(m_orig_image.width())
+                                    .arg(m_orig_image.height()));
+
     ui->statusBar->showMessage(tr("%1 was opened successfully (%2KB).")
                                             .arg(file_info.baseName()).arg(m_orig_size / 1024.0, 0, 'f', 1));
 }
@@ -113,7 +112,7 @@ void MainWindow::on_actionSave_As_triggered() {
         return;
     }
 
-    *m_orig_image = m_pixmap.toImage();
+    m_orig_image = m_pixmap.toImage();
      m_orig_image->save(imagePath);
 }
 
@@ -129,7 +128,7 @@ void MainWindow::show_pixmap() {
         m_scene->clear();
     }
 
-    m_pixmap = m_pixmap.scaled(m_orig_image->width(), m_orig_image->height());
+    m_pixmap = m_pixmap.scaled(m_orig_image.width(), m_orig_image.height());
 
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
@@ -207,8 +206,8 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 }
 
 bool MainWindow::rescale_image(int scale) {
-    int w = m_orig_image->width();
-    int h = m_orig_image->height();
+    int w = m_orig_image.width();
+    int h = m_orig_image.height();
 
     m_new_w = (w * scale)/100;
     m_new_h = (h * scale)/100;
@@ -216,7 +215,7 @@ bool MainWindow::rescale_image(int scale) {
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
-                m_orig_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+                m_orig_image.scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 
     return true;
 }
