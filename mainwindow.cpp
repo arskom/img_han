@@ -62,11 +62,11 @@ void MainWindow::on_actionOpen_triggered(){
     const auto &desktop_abs = QStandardPaths::standardLocations(
                 QStandardPaths::DesktopLocation);
 
-    m_imagePath = QFileDialog::getOpenFileName(
+    m_image_path = QFileDialog::getOpenFileName(
             this, tr("Open File"), desktop_abs.first(),
             tr("JPEG (*.jpg *.jpeg);;PNG (*.png);;BMP (*.bmp);;WEBP (*.webp)"));
 
-    if (m_imagePath.isEmpty()) {
+    if (m_image_path.isEmpty()) {
         qDebug() << "Empty string returned";
         return;
     }
@@ -168,7 +168,7 @@ void MainWindow::show_pixmap() {
 
 void MainWindow::reprocess_image(int scale, int quality) {
 
-    if (m_imagePath.isEmpty()) {
+    if (m_image_path.isEmpty()) {
         ui->sld_scale->setValue(100);
         ui->sld_quality->setValue(50);
         return;
@@ -267,7 +267,7 @@ void MainWindow::on_btn_rotate_left_clicked(){
 }
 
 void MainWindow::on_sld_zoom_valueChanged(int value){
-    if (m_imagePath.isEmpty()) {
+    if (m_image_path.isEmpty()) {
         ui->sld_zoom->setValue(100);
         return;
     }

@@ -51,7 +51,7 @@ private:
 
     void change_size();
 
-    QString m_imagePath;
+    QString m_image_path;
     std::mutex m_mutex;
     QPixmap m_pixmap;
 
