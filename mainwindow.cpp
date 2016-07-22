@@ -4,8 +4,9 @@
 
 #include <QtConcurrent/QtConcurrentRun>
 
-#include <mutex>
 #include <math.h>
+
+#include <mutex>
 #include <string>
 #include <iostream>
 
@@ -26,12 +27,11 @@
 #include <QGraphicsScene>
 #include <QStandardPaths>
 
-#define Q_INIT_RESOURCE(resource)
 
 MainWindow::MainWindow(QWidget *parent):
     QMainWindow(parent),
     m_scene(nullptr),
-    m_image(nullptr),
+    m_orig_image(nullptr),
     m_orig_size(0),
     m_processing(false),
     ui(new Ui::MainWindow)
@@ -77,23 +77,23 @@ void MainWindow::on_actionOpen_triggered(){
         return;
     }
 
-    m_image = new QImage();
-    m_image->load(m_imagePath);
+    m_orig_image = new QImage();
+    m_orig_image->load(m_imagePath);
 
     m_orig_size = QFileInfo(m_imagePath).size();
 
     m_current_scale = 100;
     m_current_size = m_orig_size;
 
-    m_pixmap = QPixmap::fromImage(*m_image);
+    m_pixmap = QPixmap::fromImage(*m_orig_image);
     show_pixmap();
 
     ui->graphicsView->setScene(m_scene);
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
     ui->lbl_dimensions->setText(
-                    QString("%1x%2").arg(m_image->width())
-                                    .arg(m_image->height()));
+                    QString("%1x%2").arg(m_orig_image->width())
+                                    .arg(m_orig_image->height()));
 }
 
 void MainWindow::on_actionSave_As_triggered() {
@@ -109,8 +109,8 @@ void MainWindow::on_actionSave_As_triggered() {
         return;
     }
 
-    *m_image = m_pixmap.toImage();
-     m_image->save(imagePath);
+    *m_orig_image = m_pixmap.toImage();
+     m_orig_image->save(imagePath);
 }
 
 void MainWindow::on_actionExit_triggered(){
@@ -125,7 +125,7 @@ void MainWindow::show_pixmap() {
         m_scene->clear();
     }
 
-    m_pixmap = m_pixmap.scaled(m_image->width(), m_image->height());
+    m_pixmap = m_pixmap.scaled(m_orig_image->width(), m_orig_image->height());
 
     m_scene->addPixmap(m_pixmap);
     m_scene->setSceneRect(m_pixmap.rect());
@@ -159,10 +159,10 @@ void MainWindow::show_pixmap() {
     std::lock_guard<std::mutex> guard(m_mutex);
     m_processing = false;
 
-    m_mv = new QMovie(":/images/loading.gif");
-    m_mv->stop();
+    m_loading_animation = new QMovie(":/images/loading.gif");
+    m_loading_animation->stop();
     ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
-    ui->lbl_busy->setMovie(m_mv);
+    ui->lbl_busy->setMovie(m_loading_animation);
 
 }
 
@@ -179,10 +179,10 @@ void MainWindow::reprocess_image(int scale, int quality) {
         return;
     }
 
-    m_mv = new QMovie(":/images/loading.gif");
-    m_mv->start();
+    m_loading_animation = new QMovie(":/images/loading.gif");
+    m_loading_animation->start();
     ui->lbl_busy->setAttribute(Qt::WA_NoSystemBackground);
-    ui->lbl_busy->setMovie(m_mv);
+    ui->lbl_busy->setMovie(m_loading_animation);
 
     QtConcurrent::run(this, &MainWindow::reprocess_image_impl, scale, quality);
 }
@@ -197,8 +197,8 @@ void MainWindow::reprocess_image_impl(int scale, int quality) {
 }
 
 void MainWindow::rescale_image(int scale) {
-    int w = m_image->width();
-    int h = m_image->height();
+    int w = m_orig_image->width();
+    int h = m_orig_image->height();
 
     m_new_w = (w * scale)/100;
     m_new_h = (h * scale)/100;
@@ -206,7 +206,7 @@ void MainWindow::rescale_image(int scale) {
     m_current_scale = scale;
 
     m_pixmap = QPixmap::fromImage(
-                m_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
+                m_orig_image->scaled(m_new_w, m_new_h, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
 void MainWindow::requality_image(int quality) {

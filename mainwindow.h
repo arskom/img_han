@@ -51,23 +51,24 @@ private:
 
     void change_size();
 
-    bool m_processing;
+    QString m_imagePath;
+    std::mutex m_mutex;
+    QPixmap m_pixmap;
+
     qint16 m_current_scale;
     qint64 m_current_size;
 
     int m_new_w;
     int m_new_h;
     int m_sld_zoom_value;
-    qreal m_ZoomFactor;
+    double m_ZoomFactor;
 
-    QString m_imagePath;
-    QMovie *m_mv;
-    std::mutex m_mutex;
-    Ui::MainWindow *ui;
-    QPixmap m_pixmap;
-    QImage  *m_image;
-    qint64 m_orig_size;
     QGraphicsScene *m_scene;
+    QMovie *m_loading_animation;
+    QImage *m_orig_image;
+    qint64 m_orig_size;
+    bool m_processing;
+    Ui::MainWindow *ui;
 };
 
 #endif // MAINWINDOW_H
