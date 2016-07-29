@@ -38,8 +38,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>353</width>
-          <height>396</height>
+          <width>395</width>
+          <height>390</height>
          </rect>
         </property>
         <attribute name="label">
@@ -269,7 +269,7 @@
             <item row="0" column="1">
              <widget class="QLabel" name="lbl_quality">
               <property name="text">
-               <string>50</string>
+               <string>20</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -531,7 +531,7 @@
      <x>0</x>
      <y>0</y>
      <width>806</width>
-     <height>18</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
